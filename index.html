@@ -6,17 +6,9 @@
   <title>The Yacht Studio — Marina del Rey</title>
   <meta name="description" content="A private recording studio aboard a 100-foot yacht in Marina del Rey. One studio. No compromises." />
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
-
-  <!-- Lenis Smooth Scroll -->
-  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
-
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,76 +20,67 @@
       --muted: #6B6B6B;
       --card: #111111;
       --border: rgba(201,168,76,0.2);
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    html { scroll-behavior: smooth; overflow-x: hidden; }
-
+    html { overflow-x: hidden; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Manrope', sans-serif;
-      font-weight: 300;
-      font-size: 16px;
-      line-height: 1.6;
-      overflow-x: hidden;
+      background: var(--bg); color: var(--text);
+      font-family: 'Manrope', sans-serif; font-weight: 300;
+      font-size: 16px; line-height: 1.6;
+      overflow-x: hidden; cursor: none;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      cursor: none;
-      opacity: 0;
-      transition: opacity 0.8s ease;
     }
-    body.loaded { opacity: 1; }
-
     img { display: block; max-width: 100%; }
     a { color: inherit; text-decoration: none; }
     ul { list-style: none; }
-
-    .serif { font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144; font-weight: 300; }
-    .mono { font-family: 'JetBrains Mono', monospace; font-weight: 300; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; }
-
     em { font-family: 'Fraunces', serif; font-style: italic; color: var(--gold); }
 
-    /* ─── CURSOR ──────────────────────────────── */
+    /* Page load overlay */
+    .page-loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #000; display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.8s ease;
+    }
+    .page-loader.done { opacity: 0; pointer-events: none; }
+    .page-loader img { height: 40px; opacity: 0; animation: loaderFade 0.6s ease 0.2s forwards; }
+    @keyframes loaderFade { to { opacity: 1; } }
+
+    /* Cursor */
     .cursor-dot {
       position: fixed; width: 8px; height: 8px;
       background: var(--gold); border-radius: 50%;
-      pointer-events: none; z-index: 9999;
+      pointer-events: none; z-index: 9998;
       transform: translate(-50%, -50%);
-      transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out);
+      transition: width 0.25s var(--ease), height 0.25s var(--ease);
     }
     .cursor-ring {
       position: fixed; width: 36px; height: 36px;
       border: 1px solid rgba(201,168,76,0.4);
-      border-radius: 50%; pointer-events: none; z-index: 9998;
+      border-radius: 50%; pointer-events: none; z-index: 9997;
       transform: translate(-50%, -50%);
     }
     body:has(a:hover, button:hover) .cursor-dot { width: 14px; height: 14px; }
     body:has(a:hover, button:hover) .cursor-ring { width: 52px; height: 52px; border-color: rgba(201,168,76,0.7); }
-
     @media (max-width: 768px) {
       body { cursor: auto; }
       .cursor-dot, .cursor-ring { display: none; }
     }
 
-    /* ─── NAV ─────────────────────────────────── */
+    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 28px 52px;
+      padding: 24px 52px;
       transition: background 0.4s, padding 0.4s, border-color 0.4s;
       border-bottom: 1px solid transparent;
     }
     nav.scrolled {
-      background: rgba(8,8,8,0.95);
-      backdrop-filter: blur(18px);
-      padding: 18px 52px;
-      border-bottom-color: var(--border);
+      background: rgba(8,8,8,0.95); backdrop-filter: blur(18px);
+      padding: 16px 52px; border-bottom-color: var(--border);
     }
-    .nav-logo img { height: 32px; display: block; }
-    .nav-center {
-      display: flex; align-items: center; gap: 44px;
-    }
+    .nav-logo { height: 56px; width: auto; }
+    .nav-center { display: flex; align-items: center; gap: 44px; }
     .nav-center a {
       font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
       letter-spacing: 0.14em; text-transform: uppercase;
@@ -112,15 +95,11 @@
     }
     .nav-cta:hover { background: var(--gold); color: var(--bg); border-color: var(--gold); }
 
-    /* Hamburger */
     .nav-hamburger {
       display: none; flex-direction: column; gap: 5px;
       background: none; border: none; padding: 8px; cursor: pointer;
     }
-    .nav-hamburger span {
-      display: block; width: 24px; height: 1px; background: var(--text);
-      transition: transform 0.3s, opacity 0.3s;
-    }
+    .nav-hamburger span { display: block; width: 24px; height: 1px; background: var(--text); transition: transform 0.3s, opacity 0.3s; }
     .nav-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
     .nav-hamburger.open span:nth-child(2) { opacity: 0; }
     .nav-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
@@ -131,37 +110,29 @@
       flex-direction: column; align-items: center; justify-content: center; gap: 40px;
     }
     .mobile-menu.open { display: flex; }
-    .mobile-menu a {
-      font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 300;
-      color: var(--text); transition: color 0.2s;
-    }
+    .mobile-menu a { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 300; color: var(--text); transition: color 0.2s; }
     .mobile-menu a:hover { color: var(--gold); }
 
     @media (max-width: 768px) {
-      nav { padding: 20px 24px; }
-      nav.scrolled { padding: 14px 24px; }
+      nav { padding: 16px 24px; }
+      nav.scrolled { padding: 12px 24px; }
       .nav-center, .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
+      .nav-logo { height: 42px; }
     }
 
-    /* ─── HERO ────────────────────────────────── */
-    .hero {
-      position: relative; width: 100vw; height: 100vh;
-      overflow: hidden; display: flex;
-      align-items: center; justify-content: flex-start;
-    }
+    /* HERO */
+    .hero { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
     .hero video {
       position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover;
+      object-fit: cover; will-change: transform;
     }
     .hero-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(160deg, rgba(0,0,0,0.2), rgba(0,0,0,0.75));
+      background: linear-gradient(160deg, rgba(0,0,0,0.15), rgba(0,0,0,0.75));
     }
     .hero-content {
-      position: relative; z-index: 2;
-      padding: 0 52px; max-width: 720px;
-      margin-top: 10vh;
+      position: absolute; bottom: 20%; left: 52px; z-index: 2; max-width: 680px;
     }
     .hero-eyebrow {
       font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
@@ -171,13 +142,9 @@
     .hero h1 {
       font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144;
       font-weight: 300; font-size: clamp(52px, 8vw, 96px);
-      line-height: 0.92; letter-spacing: -0.02em;
-      color: var(--text); margin-bottom: 32px;
+      line-height: 0.92; letter-spacing: -0.02em; margin-bottom: 32px;
     }
-    .hero-sub {
-      font-size: 1rem; color: rgba(245,240,232,0.6);
-      max-width: 420px; line-height: 1.7; margin-bottom: 44px;
-    }
+    .hero-sub { font-size: 1rem; color: rgba(245,240,232,0.6); max-width: 420px; line-height: 1.7; margin-bottom: 44px; }
     .hero-cta {
       display: inline-flex; align-items: center; gap: 12px;
       font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
@@ -196,414 +163,242 @@
       letter-spacing: 0.22em; text-transform: uppercase;
       color: rgba(245,240,232,0.3); writing-mode: vertical-rl;
     }
-    .scroll-line {
-      width: 1px; height: 52px;
-      background: linear-gradient(to bottom, var(--gold), transparent);
-      animation: scrollPulse 2.4s ease-in-out infinite;
-    }
-    @keyframes scrollPulse {
-      0%, 100% { opacity: 0.3; transform: scaleY(1); }
-      50% { opacity: 0.8; transform: scaleY(1.15); }
-    }
+    .scroll-line { width: 1px; height: 52px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2.4s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100% { opacity: 0.3; transform: scaleY(1); } 50% { opacity: 0.8; transform: scaleY(1.15); } }
 
     @media (max-width: 768px) {
-      .hero-content { padding: 0 24px; }
+      .hero-content { left: 24px; right: 24px; bottom: 15%; }
       .scroll-indicator { right: 24px; }
     }
 
-    /* ─── SECTION BASE ────────────────────────── */
+    /* Section utilities */
     .section-pad { padding: 140px 52px; }
     @media (max-width: 768px) { .section-pad { padding: 100px 24px; } }
+    .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .section-h2 { font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144; font-weight: 300; font-size: clamp(2.4rem, 4.5vw, 4.2rem); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 40px; }
 
-    .eyebrow {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 20px;
-    }
-    .section-h2 {
-      font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144;
-      font-weight: 300; font-size: clamp(2.4rem, 4.5vw, 4.2rem);
-      line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 40px;
-    }
+    .section-divider { width: 100%; height: 1px; overflow: hidden; position: relative; }
+    .section-divider::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); transform: scaleX(0); transform-origin: left; }
 
-    /* ─── VESSEL ──────────────────────────────── */
-    .vessel { background: var(--bg); }
+    /* VESSEL */
     .vessel-grid {
-      display: grid;
-      grid-template-columns: 60% 38%;
-      grid-template-rows: 1fr 1fr;
-      gap: 12px;
-      margin-top: 60px;
-      height: 600px;
+      display: grid; grid-template-columns: 60% 1fr; grid-template-rows: 1fr 1fr;
+      gap: 12px; margin-top: 60px; height: 600px;
     }
-    .vessel-grid .v-large {
-      grid-row: 1 / 3;
-      overflow: hidden; border-radius: 4px;
-    }
+    .vessel-grid .v-large { grid-row: 1/3; overflow: hidden; border-radius: 4px; }
     .vessel-grid .v-small { overflow: hidden; border-radius: 4px; }
-    .vessel-grid img { width: 100%; height: 100%; object-fit: cover; }
+    .vessel-grid img { width: 100%; height: 100%; object-fit: cover; will-change: transform; }
 
     .vessel-stats {
-      display: flex; justify-content: center; gap: 0;
-      margin-top: 80px; padding: 60px 0;
-      background-size: cover; background-position: center;
+      display: flex; justify-content: center; margin-top: 80px; padding: 60px 0;
       position: relative; border-radius: 4px; overflow: hidden;
+      background-size: cover; background-position: center;
     }
-    .vessel-stats::before {
-      content: ''; position: absolute; inset: 0;
-      background: rgba(0,0,0,0.7);
-    }
-    .stat-item {
-      position: relative; z-index: 1;
-      flex: 1; text-align: center; padding: 20px 0;
-      border-right: 1px solid var(--border);
-    }
+    .vessel-stats::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.7); }
+    .stat-item { position: relative; z-index: 1; flex: 1; text-align: center; padding: 20px 0; border-right: 1px solid var(--border); }
     .stat-item:last-child { border-right: none; }
-    .stat-number {
-      font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144;
-      font-weight: 300; font-size: 2.6rem; color: var(--gold);
-      margin-bottom: 8px;
-    }
-    .stat-label {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--muted);
-    }
+    .stat-number { font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144; font-weight: 300; font-size: 2.6rem; color: var(--gold); margin-bottom: 8px; }
+    .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 
-    .vessel-parallax {
-      position: relative; height: 50vh; overflow: hidden;
-      margin-top: 80px;
-    }
-    .vessel-parallax img {
-      position: absolute; inset: -20%; width: 100%; height: 140%;
-      object-fit: cover; will-change: transform;
-    }
-    .vessel-parallax .overlay {
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .vessel-parallax .overlay p {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: rgba(245,240,232,0.6);
-    }
+    /* Parallax full bleed */
+    .parallax-section { position: relative; height: 50vh; overflow: hidden; }
+    .parallax-section img { position: absolute; inset: -20%; width: 100%; height: 140%; object-fit: cover; will-change: transform; }
+    .parallax-section .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; }
+    .parallax-section .overlay p { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(245,240,232,0.6); }
 
     @media (max-width: 768px) {
-      .vessel-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: 300px 200px 200px;
-        height: auto;
-      }
+      .vessel-grid { grid-template-columns: 1fr; grid-template-rows: 280px 200px 200px; height: auto; }
       .vessel-grid .v-large { grid-row: auto; }
-      .vessel-stats { flex-direction: column; gap: 0; }
+      .vessel-stats { flex-direction: column; }
       .stat-item { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 0; }
       .stat-item:last-child { border-bottom: none; }
     }
 
-    /* ─── STUDIO ──────────────────────────────── */
-    .studio { background: var(--bg); }
-    .studio-body-text {
-      font-size: 1rem; color: rgba(245,240,232,0.55);
-      line-height: 1.8; max-width: 560px; margin-bottom: 60px;
-    }
+    /* STUDIO */
+    .studio-body-text { font-size: 1rem; color: rgba(245,240,232,0.55); line-height: 1.8; max-width: 560px; margin-bottom: 60px; }
 
     .studio-strip {
-      display: flex; gap: 12px;
-      overflow-x: auto; scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 12px;
-      scrollbar-width: none;
+      display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; padding-bottom: 12px; scrollbar-width: none;
     }
     .studio-strip::-webkit-scrollbar { display: none; }
-    .studio-strip img {
-      height: 460px; min-width: 380px;
-      object-fit: cover; border-radius: 4px;
-      scroll-snap-align: start; flex-shrink: 0;
-    }
+    .studio-strip img { height: 460px; min-width: 380px; object-fit: cover; border-radius: 4px; scroll-snap-align: start; flex-shrink: 0; }
 
-    .piano-video {
-      max-width: 720px; margin: 80px auto; display: block;
-      border-radius: 12px; overflow: hidden;
-      box-shadow: 0 0 80px rgba(201,168,76,0.12);
-    }
+    .piano-video { max-width: 720px; margin: 80px auto; display: block; border-radius: 12px; overflow: hidden; box-shadow: 0 0 80px rgba(201,168,76,0.12); }
     .piano-video video { width: 100%; display: block; }
-    .piano-caption {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
-      letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--gold); text-align: center; margin-top: 20px;
-    }
+    .piano-caption { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); text-align: center; margin-top: 20px; }
 
-    .gear-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: 16px; margin-top: 80px;
-    }
-    .gear-card {
-      background: var(--card); border-radius: 4px; overflow: hidden;
-      transition: transform 0.3s var(--ease-out);
-    }
+    .gear-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 80px; }
+    .gear-card { background: var(--card); border-radius: 4px; overflow: hidden; transition: transform 0.3s var(--ease); }
     .gear-card:hover { transform: translateY(-4px); }
     .gear-card-img { width: 100%; height: 200px; object-fit: cover; }
     .gear-card-body { padding: 24px; }
-    .gear-card-title {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 16px;
-    }
+    .gear-card-title { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
     .gear-card-body ul { list-style: none; }
-    .gear-card-body li {
-      font-size: 0.85rem; color: rgba(245,240,232,0.55);
-      padding: 6px 0; border-bottom: 1px solid rgba(245,240,232,0.06);
-    }
+    .gear-card-body li { font-size: 0.85rem; color: rgba(245,240,232,0.55); padding: 6px 0; border-bottom: 1px solid rgba(245,240,232,0.06); }
     .gear-card-body li:last-child { border-bottom: none; }
-
-    .gear-card-icon {
-      height: 200px; display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.03));
-      border-bottom: 1px solid rgba(201,168,76,0.1);
-    }
-    .gear-card-icon svg { opacity: 0.5; }
+    .gear-card-icon { height: 200px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.03)); border-bottom: 1px solid rgba(201,168,76,0.1); }
 
     @media (max-width: 640px) {
       .gear-grid { grid-template-columns: 1fr; }
       .studio-strip img { height: 340px; min-width: 300px; }
     }
 
-    /* Brand ticker */
-    .brand-ticker {
-      overflow: hidden; margin-top: 60px;
-      border-top: 1px solid rgba(245,240,232,0.06);
-      border-bottom: 1px solid rgba(245,240,232,0.06);
-      padding: 20px 0;
-    }
-    .brand-ticker-inner {
-      display: flex; gap: 48px; width: max-content;
-      animation: tickerScroll 30s linear infinite;
-    }
+    .brand-ticker { overflow: hidden; margin-top: 60px; border-top: 1px solid rgba(245,240,232,0.06); border-bottom: 1px solid rgba(245,240,232,0.06); padding: 20px 0; }
+    .brand-ticker-inner { display: flex; gap: 48px; width: max-content; animation: tickerScroll 30s linear infinite; }
     .brand-ticker:hover .brand-ticker-inner { animation-play-state: paused; }
-    .brand-ticker-inner span {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--muted); white-space: nowrap;
-    }
-    @keyframes tickerScroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
+    .brand-ticker-inner span { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+    @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-    /* ─── ARTISTS ─────────────────────────────── */
-    .artists { background: var(--bg); }
-
-    .name-marquee {
-      overflow: hidden; margin-bottom: 48px;
-      border-bottom: 1px solid rgba(245,240,232,0.06);
-      padding-bottom: 24px;
-    }
-    .name-marquee-inner {
-      display: flex; gap: 32px; width: max-content;
-      animation: tickerScroll 40s linear infinite;
-    }
+    /* ARTISTS */
+    .name-marquee { overflow: hidden; margin-bottom: 48px; border-bottom: 1px solid rgba(245,240,232,0.06); padding-bottom: 24px; }
+    .name-marquee-inner { display: flex; gap: 32px; width: max-content; animation: tickerScroll 40s linear infinite; }
     .name-marquee:hover .name-marquee-inner { animation-play-state: paused; }
-    .name-marquee-inner span {
-      font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 300;
-      color: rgba(245,240,232,0.3); white-space: nowrap;
-    }
-    .name-marquee-inner span::after {
-      content: '\00B7'; margin-left: 32px; color: rgba(245,240,232,0.15);
-    }
+    .name-marquee-inner span { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 300; color: rgba(245,240,232,0.3); white-space: nowrap; }
+    .name-marquee-inner span::after { content: '\00B7'; margin-left: 32px; color: rgba(245,240,232,0.15); }
 
-    .artist-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-    }
-
-    .artist-card {
-      position: relative; height: 400px; overflow: hidden;
-      border-radius: 4px; transition: transform 0.3s var(--ease-out), border-color 0.3s;
-      border: 1px solid transparent;
-    }
+    .artist-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .artist-card { position: relative; height: 400px; overflow: hidden; border-radius: 4px; border: 1px solid transparent; transition: transform 0.3s var(--ease), border-color 0.3s; }
     .artist-card:hover { transform: scale(1.02); border-color: var(--gold); }
-    .artist-card img {
-      width: 100%; height: 100%; object-fit: cover;
-    }
-    .artist-card .a-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%);
-    }
-    .artist-card .a-info {
-      position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 24px;
-    }
-    .artist-card .a-name {
-      font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144;
-      font-weight: 300; font-size: 1.3rem; color: var(--text); margin-bottom: 4px;
-    }
-    .artist-card .a-role {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
-      letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold);
-    }
+    .artist-card img { width: 100%; height: 100%; object-fit: cover; }
+    .artist-card .a-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%); }
+    .artist-card .a-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 24px; }
+    .artist-card .a-name { font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144; font-weight: 300; font-size: 1.3rem; color: var(--text); margin-bottom: 4px; }
+    .artist-card .a-role { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
 
     @media (max-width: 1024px) { .artist-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 640px) {
-      .artist-grid { grid-template-columns: 1fr; }
-      .artist-card { height: 340px; }
-    }
+    @media (max-width: 640px) { .artist-grid { grid-template-columns: 1fr; } .artist-card { height: 340px; } }
 
-    /* Section dividers */
-    .section-divider {
-      width: 100%; height: 1px; position: relative; overflow: hidden;
-      margin: 0;
+    /* HOW TO BOOK — pinned section */
+    .booking-pin { position: relative; overflow: hidden; height: 100vh; }
+    .booking-bg-img { position: absolute; inset: -20%; width: 100%; height: 140%; object-fit: cover; will-change: transform; }
+    .booking-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.8); }
+    .booking-inner {
+      position: relative; z-index: 1; height: 100%;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 0 52px;
     }
-    .section-divider::after {
-      content: ''; position: absolute; top: 0; left: 0;
-      width: 100%; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      transform: scaleX(0); transform-origin: left;
-      transition: transform 1.2s var(--ease-out);
-    }
-    .section-divider.drawn::after { transform: scaleX(1); }
-
-    /* ─── HOW TO BOOK ─────────────────────────── */
-    .booking {
-      position: relative; overflow: hidden;
-    }
-    .booking-bg {
-      position: absolute; inset: -20%; width: 100%; height: 140%;
-      object-fit: cover; will-change: transform;
-    }
-    .booking-overlay {
-      position: absolute; inset: 0; background: rgba(0,0,0,0.82);
-    }
-    .booking-content {
-      position: relative; z-index: 1;
-    }
-    .booking-steps {
-      display: flex; gap: 0; margin-top: 60px;
-    }
+    .booking-steps-wrap { display: flex; gap: 0; margin-top: 60px; width: 100%; }
     .booking-step {
-      flex: 1; padding: 0 32px;
+      flex: 1; padding: 0 28px; opacity: 0.3;
       border-right: 1px solid var(--border);
+      transition: opacity 0.6s ease;
     }
     .booking-step:last-child { border-right: none; }
     .booking-step:first-child { padding-left: 0; }
+    .booking-step.active { opacity: 1; }
     .step-num {
       font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144;
-      font-weight: 300; font-size: 3rem; color: var(--gold);
-      margin-bottom: 16px;
+      font-weight: 300; font-size: 96px; color: var(--gold);
+      margin-bottom: 16px; line-height: 1;
+      transition: transform 0.4s var(--ease);
     }
+    .booking-step.active .step-num { transform: scale(1.1); }
     .step-title {
       font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
       letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--text); margin-bottom: 12px;
+      color: var(--text); margin-bottom: 12px; position: relative; padding-bottom: 12px;
     }
-    .step-body {
-      font-size: 0.82rem; color: var(--muted); line-height: 1.7;
+    .step-title::after {
+      content: ''; position: absolute; bottom: 0; left: 0; height: 2px; width: 0;
+      background: var(--gold); transition: width 0.8s var(--ease);
     }
+    .booking-step.active .step-title::after { width: 100%; }
+    .step-body { font-size: 0.82rem; color: var(--muted); line-height: 1.7; max-width: 240px; }
+
+    .booking-progress {
+      position: absolute; bottom: 40px; left: 52px; right: 52px;
+      height: 2px; background: rgba(245,240,232,0.06); z-index: 1;
+    }
+    .booking-progress-fill { height: 100%; background: var(--gold); width: 20%; transition: width 0.6s var(--ease); }
 
     @media (max-width: 1024px) {
-      .booking-steps { flex-direction: column; gap: 40px; }
-      .booking-step { padding: 0; border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 40px; }
+      .booking-pin { height: auto; min-height: 100vh; }
+      .booking-inner { padding: 100px 24px; }
+      .booking-steps-wrap { flex-direction: column; gap: 40px; }
+      .booking-step { padding: 0; border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 40px; opacity: 1; }
       .booking-step:last-child { border-bottom: none; padding-bottom: 0; }
+      .step-num { font-size: 48px; }
+      .booking-progress { display: none; }
     }
 
-    /* ─── BUILT FOR ───────────────────────────── */
-    .built-for {
-      position: relative; overflow: hidden;
-    }
-    .built-for-bg {
-      position: absolute; inset: -20%; width: 100%; height: 140%;
-      object-fit: cover; will-change: transform;
-    }
-    .built-for-overlay {
-      position: absolute; inset: 0; background: rgba(0,0,0,0.78);
-    }
-    .built-for-content {
-      position: relative; z-index: 1;
-    }
-    .bf-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 16px; margin-top: 60px;
-    }
+    /* BUILT FOR */
+    .built-for-wrap { position: relative; overflow: hidden; }
+    .built-for-bg-img { position: absolute; inset: -20%; width: 100%; height: 140%; object-fit: cover; will-change: transform; }
+    .built-for-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.78); }
+    .built-for-content { position: relative; z-index: 1; }
+
+    .bf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 60px; }
     .bf-card {
       position: relative; overflow: hidden; border-radius: 4px;
-      background: var(--card); padding: 40px 28px; min-height: 260px;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      transition: transform 0.3s var(--ease-out);
-      border-top: 2px solid transparent;
+      aspect-ratio: 4/5; border-top: 2px solid transparent;
+      transition: border-color 0.3s;
     }
-    .bf-card:hover { transform: translateY(-4px); border-top-color: var(--gold); }
-    .bf-card-bg {
+    .bf-card:hover { border-top-color: var(--gold); }
+    .bf-card-img {
       position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; z-index: 0;
+      object-fit: cover; transition: transform 0.8s var(--ease);
     }
+    .bf-card:hover .bf-card-img { transform: scale(1.05); }
     .bf-card-gradient {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.85) 20%, rgba(0,0,0,0.4) 100%);
-      z-index: 1;
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 15%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.15) 100%);
+      transition: background 0.4s;
+    }
+    .bf-card:hover .bf-card-gradient {
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 15%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.1) 100%);
+    }
+    .bf-card-info {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+      padding: 28px 24px;
     }
     .bf-card-num {
-      position: relative; z-index: 2;
       font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
-      letter-spacing: 0.14em; color: var(--gold); margin-bottom: 12px;
+      letter-spacing: 0.14em; color: var(--gold); margin-bottom: 8px;
     }
     .bf-card-title {
-      position: relative; z-index: 2;
       font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144;
-      font-weight: 300; font-size: 1.4rem; color: var(--text);
-      line-height: 1.15;
+      font-weight: 300; font-size: 1.4rem; color: var(--text); line-height: 1.15;
     }
+    .bf-card-desc {
+      font-size: 0.8rem; color: rgba(245,240,232,0.5); line-height: 1.6;
+      max-height: 0; overflow: hidden; opacity: 0; margin-top: 0;
+      transition: max-height 0.6s var(--ease), opacity 0.4s, margin-top 0.4s;
+    }
+    .bf-card:hover .bf-card-desc { max-height: 120px; opacity: 1; margin-top: 12px; }
 
     @media (max-width: 1024px) { .bf-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 640px) { .bf-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .bf-grid { grid-template-columns: 1fr; } .bf-card { aspect-ratio: 3/4; } }
 
-    /* ─── INQUIRY ─────────────────────────────── */
-    .inquiry { background: var(--bg); }
-    .inquiry-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 80px; align-items: start; margin-top: 60px;
-    }
-    .inquiry-contact { display: flex; flex-direction: column; gap: 0; }
-    .contact-row {
-      display: flex; align-items: baseline; justify-content: space-between;
-      padding: 18px 0; border-bottom: 1px solid rgba(245,240,232,0.06);
-    }
-    .contact-row .mono { color: var(--muted); }
+    /* INQUIRY */
+    .inquiry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 60px; }
+    .contact-row { display: flex; align-items: baseline; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid rgba(245,240,232,0.06); }
+    .contact-row .mono { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; }
     .contact-row a { font-size: 0.9rem; color: var(--text); transition: color 0.2s; }
     .contact-row a:hover { color: var(--gold); }
 
-    .inquiry-form { display: flex; flex-direction: column; gap: 0; }
+    .inquiry-form { display: flex; flex-direction: column; }
     .form-group { margin-bottom: 2px; }
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      width: 100%; background: var(--card);
-      border: 1px solid var(--border); color: var(--text);
-      font-family: 'Manrope', sans-serif; font-size: 0.9rem; font-weight: 300;
-      padding: 18px 20px; outline: none;
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; background: var(--card); border: 1px solid var(--border);
+      color: var(--text); font-family: 'Manrope', sans-serif; font-size: 0.9rem;
+      font-weight: 300; padding: 18px 20px; outline: none;
       transition: border-color 0.25s, box-shadow 0.25s;
       -webkit-appearance: none; appearance: none; border-radius: 0;
     }
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 2px rgba(201,168,76,0.15);
-    }
-    .form-group input::placeholder,
-    .form-group textarea::placeholder { color: var(--muted); }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(201,168,76,0.15); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted); }
     .form-group select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.5'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 20px center;
-      padding-right: 44px;
+      background-repeat: no-repeat; background-position: right 20px center; padding-right: 44px;
     }
     .form-group select option { background: var(--card); }
     .form-group textarea { min-height: 120px; resize: vertical; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-
     .form-submit {
-      margin-top: 8px; width: 100%;
-      background: var(--gold); color: var(--bg);
-      border: none; font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem; letter-spacing: 0.16em;
-      text-transform: uppercase; padding: 20px 36px;
+      margin-top: 8px; width: 100%; background: var(--gold); color: var(--bg);
+      border: none; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.16em; text-transform: uppercase; padding: 20px 36px;
       cursor: pointer; transition: background 0.25s, letter-spacing 0.25s;
     }
     .form-submit:hover { background: #d4b35a; letter-spacing: 0.22em; }
@@ -611,76 +406,40 @@
     @media (max-width: 768px) {
       .inquiry-grid { grid-template-columns: 1fr; gap: 48px; }
       .form-row { grid-template-columns: 1fr; }
-      .form-submit { cursor: auto; }
     }
 
-    /* ─── FOOTER ──────────────────────────────── */
-    footer {
-      background: #050505; padding: 80px 52px 44px;
-      border-top: 1px solid var(--border);
-    }
-    .footer-top {
-      display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
-      gap: 48px; margin-bottom: 60px;
-    }
-    .footer-col-title {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 20px;
-    }
+    /* FOOTER */
+    footer { background: #050505; padding: 80px 52px 44px; border-top: 1px solid var(--border); }
+    .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr; gap: 48px; margin-bottom: 60px; }
+    .footer-col-title { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
     .footer-links { display: flex; flex-direction: column; gap: 12px; }
-    .footer-links a {
-      font-size: 0.85rem; color: rgba(245,240,232,0.45);
-      transition: color 0.2s;
-    }
+    .footer-links a { font-size: 0.85rem; color: rgba(245,240,232,0.45); transition: color 0.2s; }
     .footer-links a:hover { color: var(--gold); }
-    .footer-coords-text {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
-      letter-spacing: 0.06em; color: rgba(245,240,232,0.3); line-height: 1.8;
-    }
+    .footer-coords-text { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; color: rgba(245,240,232,0.3); line-height: 1.8; }
     .footer-email-form { display: flex; gap: 0; margin-top: 4px; }
-    .footer-email-input {
-      flex: 1; background: var(--card); border: 1px solid var(--border);
-      color: var(--text); font-family: 'Manrope', sans-serif;
-      font-size: 0.82rem; padding: 10px 14px; outline: none;
-      border-radius: 0;
-    }
+    .footer-email-input { flex: 1; background: var(--card); border: 1px solid var(--border); color: var(--text); font-family: 'Manrope', sans-serif; font-size: 0.82rem; padding: 10px 14px; outline: none; border-radius: 0; }
     .footer-email-input::placeholder { color: var(--muted); }
-    .footer-email-btn {
-      background: var(--gold); color: var(--bg); border: none;
-      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 10px 16px; cursor: pointer;
-    }
-
-    .footer-bottom {
-      padding-top: 24px; border-top: 1px solid var(--border);
-      display: flex; justify-content: center; align-items: center;
-    }
-    .footer-bottom span {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: rgba(245,240,232,0.18);
-    }
-
+    .footer-email-btn { background: var(--gold); color: var(--bg); border: none; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 16px; cursor: pointer; }
+    .footer-bottom { padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: center; }
+    .footer-bottom span { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.18); }
     .footer-logo-img { height: 28px; margin-bottom: 16px; }
 
-    @media (max-width: 768px) {
-      footer { padding: 60px 24px 32px; }
-      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
-    }
-    @media (max-width: 480px) {
-      .footer-top { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 768px) { footer { padding: 60px 24px 32px; } .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; } }
+    @media (max-width: 480px) { .footer-top { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
+
+  <!-- Page loader -->
+  <div class="page-loader" id="pageLoader">
+    <img src="images/yacht studio logo white long.png" alt="" />
+  </div>
 
   <!-- Cursor -->
   <div class="cursor-dot" id="cursorDot"></div>
   <div class="cursor-ring" id="cursorRing"></div>
 
-  <!-- Mobile Menu -->
+  <!-- Mobile menu -->
   <div class="mobile-menu" id="mobileMenu">
     <a href="#vessel" onclick="closeMobile()">The Vessel</a>
     <a href="#studio" onclick="closeMobile()">The Studio</a>
@@ -689,11 +448,12 @@
     <a href="#inquiry" onclick="closeMobile()">Inquire</a>
   </div>
 
-  <!-- ═══ NAV ═══ -->
+  <div id="smooth-wrapper">
+  <div id="smooth-content">
+
+  <!-- NAV -->
   <nav id="mainNav">
-    <div class="nav-logo">
-      <a href="#"><img src="images/yacht studio logo white long.png" alt="The Yacht Studio" /></a>
-    </div>
+    <a href="#"><img src="images/yacht studio logo white long.png" alt="The Yacht Studio" class="nav-logo" /></a>
     <div class="nav-center">
       <a href="#vessel">The Vessel</a>
       <a href="#studio">The Studio</a>
@@ -701,165 +461,120 @@
       <a href="#booking">Book</a>
     </div>
     <a href="#inquiry" class="nav-cta">Inquire</a>
-    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ═══ SECTION 1: HERO ═══ -->
+  <!-- HERO -->
   <section class="hero" id="hero">
     <video src="hero.mp4" autoplay muted loop playsinline preload="auto"></video>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <p class="hero-eyebrow">Marina del Rey, California — 33&deg;58&prime;N</p>
-      <h1 class="serif">The <em>Yacht</em> Studio</h1>
-      <p class="hero-sub">One hundred feet of open water. One studio. Absolute privacy.</p>
-      <a href="#inquiry" class="hero-cta">Request Access &rarr;</a>
+      <p class="hero-eyebrow reveal">Marina del Rey, California — 33&deg;58&prime;N</p>
+      <h1 class="reveal" style="transition-delay:0.15s">The <em>Yacht</em> Studio</h1>
+      <p class="hero-sub reveal" style="transition-delay:0.3s">One hundred feet of open water. One studio. Absolute privacy.</p>
+      <a href="#inquiry" class="hero-cta reveal" style="transition-delay:0.45s">Request Access &rarr;</a>
     </div>
-    <div class="scroll-indicator">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
-    </div>
+    <div class="scroll-indicator"><span>Scroll</span><div class="scroll-line"></div></div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- ═══ SECTION 2: THE VESSEL ═══ -->
-  <section class="vessel section-pad" id="vessel">
-    <p class="eyebrow">Chapter I — The Vessel</p>
-    <h2 class="section-h2">100 feet. Open water. <em>No limits.</em></h2>
+  <!-- VESSEL -->
+  <section class="section-pad" id="vessel">
+    <p class="eyebrow reveal">Chapter I — The Vessel</p>
+    <h2 class="section-h2 reveal">100 feet. Open water. <em>No limits.</em></h2>
 
     <div class="vessel-grid">
-      <div class="v-large">
-        <img src="images/9X7A1172.jpg" alt="Yacht at night" id="vesselLarge" />
-      </div>
-      <div class="v-small">
-        <img src="images/9X7A1182.jpg" alt="Yacht at night, top view" />
-      </div>
-      <div class="v-small">
-        <img src="images/Photo Aug 12 2025, 2 02 19 PM.jpg" alt="Yacht interior" />
-      </div>
+      <div class="v-large"><img src="images/9X7A1172.jpg" alt="Yacht at night" class="zoom-reveal parallax-img" /></div>
+      <div class="v-small"><img src="images/9X7A1182.jpg" alt="Yacht" class="zoom-reveal" /></div>
+      <div class="v-small"><img src="images/Photo Aug 12 2025, 2 02 19 PM.jpg" alt="Interior" class="zoom-reveal" /></div>
     </div>
 
-    <div class="vessel-stats" style="background-image: url('images/yacht-sunset.jpg');">
-      <div class="stat-item">
-        <div class="stat-number" data-count="100">0</div>
-        <div class="stat-label">FT</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number stat-text">Marina del Rey</div>
-        <div class="stat-label">Location</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number stat-text">One</div>
-        <div class="stat-label">Studio</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number stat-text">Private</div>
-        <div class="stat-label">Sessions</div>
-      </div>
+    <div class="vessel-stats reveal" style="background-image:url('images/yacht-sunset.jpg');">
+      <div class="stat-item"><div class="stat-number" data-count="100">0</div><div class="stat-label">FT</div></div>
+      <div class="stat-item"><div class="stat-number stat-text">Marina del Rey</div><div class="stat-label">Location</div></div>
+      <div class="stat-item"><div class="stat-number stat-text">One</div><div class="stat-label">Studio</div></div>
+      <div class="stat-item"><div class="stat-number stat-text">Private</div><div class="stat-label">Sessions</div></div>
     </div>
   </section>
 
-  <!-- Vessel parallax strip -->
-  <div class="vessel-parallax">
-    <img src="images/yacht-aerial.jpg" alt="Aerial view of yacht" id="aerialParallax" />
-    <div class="overlay">
-      <p>33&deg;58&prime;N 118&deg;27&prime;W — Marina del Rey</p>
-    </div>
+  <!-- Aerial parallax -->
+  <div class="parallax-section">
+    <img src="images/yacht-daylight.jpg" alt="Yacht aerial" class="parallax-img" />
+    <div class="overlay"><p>33&deg;58&prime;N 118&deg;27&prime;W — Marina del Rey</p></div>
   </div>
 
   <div class="section-divider"></div>
 
-  <!-- ═══ SECTION 3: THE STUDIO ═══ -->
-  <section class="studio section-pad" id="studio">
-    <p class="eyebrow">Chapter II — The Studio</p>
-    <h2 class="section-h2">Built to <em>record.</em></h2>
-    <p class="studio-body-text">Professional-grade production on the Pacific. Acoustically treated. The energy on the water is unlike anything on land.</p>
+  <!-- STUDIO -->
+  <section class="section-pad" id="studio">
+    <p class="eyebrow reveal">Chapter II — The Studio</p>
+    <h2 class="section-h2 reveal">Built to <em>record.</em></h2>
+    <p class="studio-body-text reveal">Professional-grade production on the Pacific. Acoustically treated. The energy on the water is unlike anything on land.</p>
 
-    <!-- Horizontal scroll strip -->
     <div class="studio-strip">
-      <img src="images/9X7A0217.jpg" alt="Studio" />
-      <img src="images/9X7A0229.jpg" alt="Studio session" />
-      <img src="images/9X7A0083.jpg" alt="Studio equipment" />
-      <img src="images/9X7A0180.jpg" alt="Studio vibe" />
-      <img src="images/studio-interior.jpg" alt="Studio interior" />
+      <img src="images/9X7A0217.jpg" alt="Studio" class="zoom-reveal" />
+      <img src="images/9X7A0229.jpg" alt="Studio session" class="zoom-reveal" />
+      <img src="images/9X7A0083.jpg" alt="Studio equipment" class="zoom-reveal" />
+      <img src="images/9X7A0180.jpg" alt="Studio vibe" class="zoom-reveal" />
     </div>
 
-    <!-- Piano video -->
     <div class="piano-video">
       <video src="images/yacht studi scot.mp4" autoplay muted loop playsinline preload="auto"></video>
     </div>
-    <p class="piano-caption">Scott Storch — Session &middot; The Yacht Studio &middot; Marina del Rey</p>
+    <p class="piano-caption reveal">Scott Storch — Session &middot; The Yacht Studio &middot; Marina del Rey</p>
 
-    <!-- Gear Grid -->
     <div class="gear-grid">
-      <div class="gear-card">
+      <div class="gear-card reveal">
         <img class="gear-card-img" src="images/9X7A0018.jpg" alt="Keyboards" />
         <div class="gear-card-body">
           <p class="gear-card-title">Keyboards &amp; Synths</p>
-          <ul>
-            <li>Arturia Astrolab 88</li>
-            <li>Arturia PolyBrute 12</li>
-          </ul>
+          <ul><li>Arturia Astrolab 88</li><li>Arturia PolyBrute 12</li></ul>
         </div>
       </div>
-      <div class="gear-card">
+      <div class="gear-card reveal">
         <img class="gear-card-img" src="images/9X7A0429.jpg" alt="Microphones" />
         <div class="gear-card-body">
           <p class="gear-card-title">Microphones</p>
-          <ul>
-            <li>Neumann U87</li>
-            <li>Sony C-800G</li>
-          </ul>
+          <ul><li>Neumann U87</li><li>Sony C-800G</li></ul>
         </div>
       </div>
-      <div class="gear-card">
+      <div class="gear-card reveal">
         <div class="gear-card-icon">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
             <circle cx="8" cy="10" r="1.5"/><circle cx="12" cy="10" r="1.5"/><circle cx="16" cy="10" r="1.5"/>
           </svg>
         </div>
         <div class="gear-card-body">
           <p class="gear-card-title">Console &amp; DAW</p>
-          <ul>
-            <li>Universal Audio Apollo</li>
-            <li>Pro Tools</li>
-          </ul>
+          <ul><li>Universal Audio Apollo</li><li>Pro Tools</li></ul>
         </div>
       </div>
-      <div class="gear-card">
-        <img class="gear-card-img" src="images/studio-setup.jpg" alt="Studio Monitors" />
+      <div class="gear-card reveal">
+        <img class="gear-card-img" src="images/gen-monitors.jpg" alt="Studio Monitors" />
         <div class="gear-card-body">
           <p class="gear-card-title">Studio Monitors</p>
-          <ul>
-            <li>Genelec 8351B</li>
-            <li>Yamaha NS-10M</li>
-          </ul>
+          <ul><li>Genelec 8351B</li><li>Yamaha NS-10M</li></ul>
         </div>
       </div>
     </div>
 
-    <!-- Brand ticker -->
     <div class="brand-ticker">
       <div class="brand-ticker-inner">
-        <span>Neumann</span><span>Universal Audio</span><span>Genelec</span>
-        <span>Arturia</span><span>Yamaha</span><span>Sony</span><span>Pro Tools</span>
-        <span>Neumann</span><span>Universal Audio</span><span>Genelec</span>
-        <span>Arturia</span><span>Yamaha</span><span>Sony</span><span>Pro Tools</span>
+        <span>Neumann</span><span>Universal Audio</span><span>Genelec</span><span>Arturia</span><span>Yamaha</span><span>Sony</span><span>Pro Tools</span>
+        <span>Neumann</span><span>Universal Audio</span><span>Genelec</span><span>Arturia</span><span>Yamaha</span><span>Sony</span><span>Pro Tools</span>
       </div>
     </div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- ═══ SECTION 4: ARTISTS ═══ -->
-  <section class="artists section-pad" id="artists">
-    <p class="eyebrow">Chapter III — In Session</p>
-    <h2 class="section-h2">Where the industry <em>comes to create.</em></h2>
+  <!-- ARTISTS -->
+  <section class="section-pad" id="artists">
+    <p class="eyebrow reveal">Chapter III — In Session</p>
+    <h2 class="section-h2 reveal">Where the industry <em>comes to create.</em></h2>
 
-    <!-- Name marquee -->
     <div class="name-marquee">
       <div class="name-marquee-inner">
         <span>Scott Storch</span><span>DDG</span><span>Hit-Boy</span><span>Nikki Paige</span>
@@ -875,53 +590,28 @@
       </div>
     </div>
 
-    <!-- Artist grid — photo cards only -->
     <div class="artist-grid">
-      <div class="artist-card">
-        <img src="images/ScottStorch.png" alt="Scott Storch" />
-        <div class="a-overlay"></div>
-        <div class="a-info"><p class="a-name">Scott Storch</p><p class="a-role">Producer</p></div>
-      </div>
-      <div class="artist-card">
-        <img src="images/session-ddg.jpg" alt="DDG" />
-        <div class="a-overlay"></div>
-        <div class="a-info"><p class="a-name">DDG</p><p class="a-role">Artist</p></div>
-      </div>
-      <div class="artist-card">
-        <img src="images/9X7A0253.jpg" alt="Hit-Boy" />
-        <div class="a-overlay"></div>
-        <div class="a-info"><p class="a-name">Hit-Boy</p><p class="a-role">Producer</p></div>
-      </div>
-      <div class="artist-card">
-        <img src="images/Storchkeys.png" alt="Scott Storch in session" />
-        <div class="a-overlay"></div>
-        <div class="a-info"><p class="a-name">Scott Storch</p><p class="a-role">In Session</p></div>
-      </div>
-      <div class="artist-card">
-        <img src="images/9X7A0114.jpg" alt="Nikki Paige" />
-        <div class="a-overlay"></div>
-        <div class="a-info"><p class="a-name">Nikki Paige</p><p class="a-role">Artist — MF Records</p></div>
-      </div>
-      <div class="artist-card">
-        <img src="images/yacht-jacuzzi.jpg" alt="The Experience" />
-        <div class="a-overlay"></div>
-        <div class="a-info"><p class="a-name">The Experience</p></div>
-      </div>
+      <div class="artist-card"><img src="images/ScottStorch.png" alt="Scott Storch" /><div class="a-overlay"></div><div class="a-info"><p class="a-name">Scott Storch</p><p class="a-role">Producer</p></div></div>
+      <div class="artist-card"><img src="images/session-ddg.jpg" alt="DDG" /><div class="a-overlay"></div><div class="a-info"><p class="a-name">DDG</p><p class="a-role">Artist</p></div></div>
+      <div class="artist-card"><img src="images/9X7A0253.jpg" alt="Hit-Boy" /><div class="a-overlay"></div><div class="a-info"><p class="a-name">Hit-Boy</p><p class="a-role">Producer</p></div></div>
+      <div class="artist-card"><img src="images/Storchkeys.png" alt="Scott Storch in session" /><div class="a-overlay"></div><div class="a-info"><p class="a-name">Scott Storch</p><p class="a-role">In Session</p></div></div>
+      <div class="artist-card"><img src="images/9X7A0114.jpg" alt="Nikki Paige" /><div class="a-overlay"></div><div class="a-info"><p class="a-name">Nikki Paige</p><p class="a-role">Artist — MF Records</p></div></div>
+      <div class="artist-card"><img src="images/yacht-jacuzzi.jpg" alt="The Experience" /><div class="a-overlay"></div><div class="a-info"><p class="a-name">The Experience</p></div></div>
     </div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- ═══ SECTION 5: HOW TO BOOK ═══ -->
-  <section class="booking section-pad" id="booking">
-    <img class="booking-bg" src="images/yacht-boarding.jpg" alt="" id="bookingParallax" />
+  <!-- HOW TO BOOK -->
+  <section class="booking-pin section-pad" id="booking">
+    <img class="booking-bg-img parallax-img" src="images/gen-howtobook.jpg" alt="" />
     <div class="booking-overlay"></div>
-    <div class="booking-content">
-      <p class="eyebrow">Chapter IV — Your Journey</p>
-      <h2 class="section-h2">How to <em>Book.</em></h2>
+    <div class="booking-inner">
+      <p class="eyebrow reveal">Chapter IV — Your Journey</p>
+      <h2 class="section-h2 reveal">How to <em>Book.</em></h2>
 
-      <div class="booking-steps">
-        <div class="booking-step">
+      <div class="booking-steps-wrap" id="bookingSteps">
+        <div class="booking-step active">
           <p class="step-num">01</p>
           <p class="step-title">Inquire</p>
           <p class="step-body">Tell us about your project, vision, and dates.</p>
@@ -947,48 +637,74 @@
           <p class="step-body">Leave with world-class recordings and memories that last.</p>
         </div>
       </div>
+
+      <div class="booking-progress"><div class="booking-progress-fill" id="bookingProgress"></div></div>
     </div>
   </section>
 
-  <!-- ═══ SECTION 6: BUILT FOR ═══ -->
-  <section class="built-for section-pad" id="built-for">
-    <img class="built-for-bg" src="images/stateroom-lv.jpg" alt="" id="builtForParallax" />
+  <div class="section-divider"></div>
+
+  <!-- BUILT FOR -->
+  <section class="built-for-wrap section-pad" id="built-for">
+    <img class="built-for-bg-img parallax-img" src="images/stateroom-lv.jpg" alt="" />
     <div class="built-for-overlay"></div>
     <div class="built-for-content">
-      <h2 class="section-h2">What we're <em>built for.</em></h2>
+      <h2 class="section-h2 reveal">What we're <em>built for.</em></h2>
 
       <div class="bf-grid">
-        <div class="bf-card">
-          <span class="bf-card-num">01</span>
-          <p class="bf-card-title">Studio Lockout Sessions</p>
-        </div>
-        <div class="bf-card">
-          <img class="bf-card-bg" src="images/yacht-dj-deck.jpg" alt="" />
+        <div class="bf-card zoom-reveal">
+          <img class="bf-card-img" src="images/gen-builtfor-lockout.jpg" alt="" />
           <div class="bf-card-gradient"></div>
-          <span class="bf-card-num">02</span>
-          <p class="bf-card-title">Private Events &amp; Parties</p>
+          <div class="bf-card-info">
+            <span class="bf-card-num">01</span>
+            <p class="bf-card-title">Studio Lockout Sessions</p>
+            <p class="bf-card-desc">24/7 exclusive studio access for album cycles, mixtape sessions, or high-output creative sprints.</p>
+          </div>
         </div>
-        <div class="bf-card">
-          <img class="bf-card-bg" src="images/DJI_0154.MP4.00_01_18_03.Still001.jpg" alt="" />
+        <div class="bf-card zoom-reveal">
+          <img class="bf-card-img" src="images/gen-builtfor-events.jpg" alt="" />
           <div class="bf-card-gradient"></div>
-          <span class="bf-card-num">03</span>
-          <p class="bf-card-title">Film &amp; Video Production</p>
+          <div class="bf-card-info">
+            <span class="bf-card-num">02</span>
+            <p class="bf-card-title">Private Events &amp; Parties</p>
+            <p class="bf-card-desc">An unforgettable setting for industry events, release parties, and artist celebrations.</p>
+          </div>
         </div>
-        <div class="bf-card">
-          <img class="bf-card-bg" src="images/yacht-helm.jpg" alt="" />
+        <div class="bf-card zoom-reveal">
+          <img class="bf-card-img" src="images/gen-builtfor-film.jpg" alt="" />
           <div class="bf-card-gradient"></div>
-          <span class="bf-card-num">04</span>
-          <p class="bf-card-title">Corporate Retreats</p>
+          <div class="bf-card-info">
+            <span class="bf-card-num">03</span>
+            <p class="bf-card-title">Film &amp; Video Production</p>
+            <p class="bf-card-desc">Music videos, documentary content, brand campaigns with cinematic production value.</p>
+          </div>
         </div>
-        <div class="bf-card">
-          <span class="bf-card-num">05</span>
-          <p class="bf-card-title">Artist Development</p>
-        </div>
-        <div class="bf-card">
-          <img class="bf-card-bg" src="images/IMG_8329.jpg" alt="" />
+        <div class="bf-card zoom-reveal">
+          <img class="bf-card-img" src="images/gen-builtfor-corporate.jpg" alt="" />
           <div class="bf-card-gradient"></div>
-          <span class="bf-card-num">06</span>
-          <p class="bf-card-title">Podcast &amp; Content Studio</p>
+          <div class="bf-card-info">
+            <span class="bf-card-num">04</span>
+            <p class="bf-card-title">Corporate Retreats</p>
+            <p class="bf-card-desc">Executive off-sites and leadership meetings in a setting designed to shift perspective.</p>
+          </div>
+        </div>
+        <div class="bf-card zoom-reveal">
+          <img class="bf-card-img" src="images/gen-builtfor-development.jpg" alt="" />
+          <div class="bf-card-gradient"></div>
+          <div class="bf-card-info">
+            <span class="bf-card-num">05</span>
+            <p class="bf-card-title">Artist Development</p>
+            <p class="bf-card-desc">Intensive writing and development sessions away from distractions. The water removes the noise.</p>
+          </div>
+        </div>
+        <div class="bf-card zoom-reveal">
+          <img class="bf-card-img" src="images/gen-builtfor-podcast.jpg" alt="" />
+          <div class="bf-card-gradient"></div>
+          <div class="bf-card-info">
+            <span class="bf-card-num">06</span>
+            <p class="bf-card-title">Podcast &amp; Content Studio</p>
+            <p class="bf-card-desc">Long-form interviews and branded content in a visually stunning environment.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -996,50 +712,28 @@
 
   <div class="section-divider"></div>
 
-  <!-- ═══ SECTION 7: INQUIRY ═══ -->
-  <section class="inquiry section-pad" id="inquiry">
-    <p class="eyebrow">Chapter V — Request Access</p>
-    <h2 class="section-h2">Get in <em>touch.</em></h2>
+  <!-- INQUIRY -->
+  <section class="section-pad" id="inquiry">
+    <p class="eyebrow reveal">Chapter V — Request Access</p>
+    <h2 class="section-h2 reveal">Get in <em>touch.</em></h2>
 
     <div class="inquiry-grid">
-      <div class="inquiry-contact">
-        <div class="contact-row">
-          <span class="mono">Instagram</span>
-          <a href="https://instagram.com/malibufilms" target="_blank" rel="noopener">@malibufilms</a>
-        </div>
-        <div class="contact-row">
-          <span class="mono">Email</span>
-          <a href="mailto:greg@malibufilms.com">greg@malibufilms.com</a>
-        </div>
-        <div class="contact-row">
-          <span class="mono">Location</span>
-          <a href="https://maps.google.com/?q=Marina+del+Rey+CA" target="_blank" rel="noopener">Marina del Rey, CA</a>
-        </div>
+      <div class="reveal">
+        <div class="contact-row"><span class="mono">Instagram</span><a href="https://instagram.com/malibufilms" target="_blank" rel="noopener">@malibufilms</a></div>
+        <div class="contact-row"><span class="mono">Email</span><a href="mailto:greg@malibufilms.com">greg@malibufilms.com</a></div>
+        <div class="contact-row"><span class="mono">Location</span><a href="https://maps.google.com/?q=Marina+del+Rey+CA" target="_blank" rel="noopener">Marina del Rey, CA</a></div>
       </div>
 
-      <form
-        class="inquiry-form"
-        action="https://formsubmit.co/greg@malibufilms.com"
-        method="POST"
-      >
+      <form class="inquiry-form reveal" action="https://formsubmit.co/greg@malibufilms.com" method="POST">
         <input type="hidden" name="_subject" value="The Yacht Studio — New Inquiry" />
         <input type="hidden" name="_captcha" value="false" />
         <input type="hidden" name="_template" value="table" />
         <input type="text" name="_honey" style="display:none" />
-
         <div class="form-row">
-          <div class="form-group">
-            <input type="text" name="name" placeholder="Your Name" required />
-          </div>
-          <div class="form-group">
-            <input type="email" name="email" placeholder="Email Address" required />
-          </div>
+          <div class="form-group"><input type="text" name="name" placeholder="Your Name" required /></div>
+          <div class="form-group"><input type="email" name="email" placeholder="Email Address" required /></div>
         </div>
-
-        <div class="form-group">
-          <input type="tel" name="phone" placeholder="Phone (optional)" />
-        </div>
-
+        <div class="form-group"><input type="tel" name="phone" placeholder="Phone (optional)" /></div>
         <div class="form-group">
           <select name="type" required>
             <option value="" disabled selected>Type of Inquiry</option>
@@ -1052,45 +746,28 @@
             <option value="Other">Other</option>
           </select>
         </div>
-
-        <div class="form-group">
-          <input type="text" name="dates" placeholder="Preferred Dates" />
-        </div>
-
-        <div class="form-group">
-          <textarea name="message" placeholder="Tell us about the project..."></textarea>
-        </div>
-
+        <div class="form-group"><input type="text" name="dates" placeholder="Preferred Dates" /></div>
+        <div class="form-group"><textarea name="message" placeholder="Tell us about the project..."></textarea></div>
         <button type="submit" class="form-submit">Send Inquiry &rarr;</button>
       </form>
     </div>
   </section>
 
-  <!-- ═══ FOOTER ═══ -->
+  <!-- FOOTER -->
   <footer>
     <div class="footer-top">
       <div>
         <img class="footer-logo-img" src="images/yacht studio logo white long.png" alt="The Yacht Studio" />
         <div class="footer-links">
           <p class="footer-col-title">Navigate</p>
-          <a href="#vessel">The Vessel</a>
-          <a href="#studio">The Studio</a>
-          <a href="#artists">Artists</a>
-          <a href="#booking">How to Book</a>
-          <a href="#inquiry">Inquire</a>
+          <a href="#vessel">The Vessel</a><a href="#studio">The Studio</a>
+          <a href="#artists">Artists</a><a href="#booking">How to Book</a><a href="#inquiry">Inquire</a>
         </div>
       </div>
-
       <div>
         <p class="footer-col-title">Coordinates</p>
-        <p class="footer-coords-text">
-          33&deg;58&prime;23&Prime;N<br>
-          118&deg;27&prime;08&Prime;W<br><br>
-          Marina del Rey<br>
-          California
-        </p>
+        <p class="footer-coords-text">33&deg;58&prime;23&Prime;N<br>118&deg;27&prime;08&Prime;W<br><br>Marina del Rey<br>California</p>
       </div>
-
       <div>
         <p class="footer-col-title">Contact</p>
         <div class="footer-links">
@@ -1098,7 +775,6 @@
           <a href="https://instagram.com/malibufilms" target="_blank" rel="noopener">@malibufilms</a>
         </div>
       </div>
-
       <div>
         <p class="footer-col-title">Stay Inspired</p>
         <div class="footer-email-form">
@@ -1107,230 +783,140 @@
         </div>
       </div>
     </div>
-
-    <div class="footer-bottom">
-      <span>&copy; 2026 MF Records &middot; The Yacht Studio &middot; All rights reserved</span>
-    </div>
+    <div class="footer-bottom"><span>&copy; 2026 MF Records &middot; The Yacht Studio &middot; All rights reserved</span></div>
   </footer>
 
-  <!-- ═══ SCRIPTS ═══ -->
-  <script>
-    // ── PAGE LOAD ────────────────────────────────────
-    window.addEventListener('load', () => document.body.classList.add('loaded'));
+  </div><!-- smooth-content -->
+  </div><!-- smooth-wrapper -->
 
-    // ── LENIS SMOOTH SCROLL ──────────────────────────
-    const lenis = new Lenis({
-      duration: 1.4,
-      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    // PAGE LOAD
+    window.addEventListener('load', () => {
+      setTimeout(() => document.getElementById('pageLoader').classList.add('done'), 800);
     });
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    // Connect Lenis to GSAP ScrollTrigger
+    // LENIS
+    const lenis = new Lenis({
+      duration: 1.6,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2
+    });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(time => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    // ── CURSOR ───────────────────────────────────────
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+
+    // CURSOR
     const dot = document.getElementById('cursorDot');
     const ring = document.getElementById('cursorRing');
     let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx+'px'; dot.style.top = my+'px'; });
+    (function animR() { rx += (mx-rx)*0.12; ry += (my-ry)*0.12; ring.style.left = rx+'px'; ring.style.top = ry+'px'; requestAnimationFrame(animR); })();
 
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.left = mx + 'px';
-      dot.style.top = my + 'px';
-    });
+    // NAV
+    lenis.on('scroll', ({scroll}) => document.getElementById('mainNav').classList.toggle('scrolled', scroll > 80));
 
-    (function animRing() {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.left = rx + 'px';
-      ring.style.top = ry + 'px';
-      requestAnimationFrame(animRing);
-    })();
-
-    // ── NAV SCROLL ───────────────────────────────────
-    const nav = document.getElementById('mainNav');
-    lenis.on('scroll', ({ scroll }) => {
-      nav.classList.toggle('scrolled', scroll > 80);
-    });
-
-    // ── MOBILE MENU ──────────────────────────────────
+    // MOBILE
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
-
     hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      mobileMenu.classList.toggle('open');
-      if (mobileMenu.classList.contains('open')) lenis.stop();
-      else lenis.start();
+      hamburger.classList.toggle('open'); mobileMenu.classList.toggle('open');
+      mobileMenu.classList.contains('open') ? lenis.stop() : lenis.start();
     });
+    function closeMobile() { hamburger.classList.remove('open'); mobileMenu.classList.remove('open'); lenis.start(); }
 
-    function closeMobile() {
-      hamburger.classList.remove('open');
-      mobileMenu.classList.remove('open');
-      lenis.start();
-    }
-
-    // ── GSAP ANIMATIONS ─────────────────────────────
+    // GSAP
     gsap.registerPlugin(ScrollTrigger);
 
-    // Hero content parallax (increased intensity)
-    gsap.to('.hero-content', {
-      y: -100,
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
-    });
+    // Hero parallax
+    gsap.to('.hero video', { yPercent: 15, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }});
+    gsap.to('.hero-content', { y: -80, opacity: 0, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }});
 
-    // Hero video parallax
-    gsap.to('.hero video', {
-      y: 100,
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
-    });
-
-    // Section dividers — draw in on scroll
+    // Section dividers draw-in
     gsap.utils.toArray('.section-divider').forEach(el => {
-      ScrollTrigger.create({
-        trigger: el,
-        start: 'top 90%',
-        once: true,
-        onEnter: () => el.classList.add('drawn')
+      gsap.to(el.style, { onStart: () => {} }); // register
+      gsap.fromTo(el, { '--scaleX': 0 }, { '--scaleX': 1, duration: 1.2, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%' }});
+      // use direct style
+      ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true,
+        onEnter: () => { el.style.setProperty('--draw', '1'); el.querySelector('::after') || (el.innerHTML = ''); gsap.to(el, { onStart: () => el.style.cssText += ';' }); }
       });
     });
-
-    // Universal section reveal — slow scale + fade
-    gsap.utils.toArray('.eyebrow, .section-h2, .studio-body-text, .piano-caption, .inquiry-contact, .inquiry-form, .contact-row').forEach(el => {
-      gsap.from(el, {
-        opacity: 0, y: 50, duration: 1.2, ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 85%' }
-      });
+    // Simpler approach for dividers
+    document.querySelectorAll('.section-divider').forEach(el => {
+      const bar = document.createElement('div');
+      bar.style.cssText = 'height:1px;width:0%;background:linear-gradient(90deg,transparent,#C9A84C,transparent);transition:width 1.2s cubic-bezier(0.16,1,0.3,1);';
+      el.appendChild(bar);
+      ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => bar.style.width = '100%' });
     });
 
-    // Vessel grid stagger with scale reveal
-    gsap.utils.toArray('.vessel-grid > div').forEach((el, i) => {
-      gsap.from(el, {
-        opacity: 0, y: 50, scale: 1.05, duration: 1.2, delay: i * 0.15,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: '.vessel-grid', start: 'top 80%' }
-      });
+    // Reveals
+    gsap.utils.toArray('.reveal').forEach(el => {
+      gsap.from(el, { opacity: 0, y: 60, duration: 1.4, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' }});
     });
 
-    // Vessel large image parallax (increased intensity)
-    gsap.to('#vesselLarge', {
-      y: -100,
-      scrollTrigger: { trigger: '.vessel-grid', start: 'top bottom', end: 'bottom top', scrub: true }
+    // Zoom reveals (Benetti signature)
+    gsap.utils.toArray('.zoom-reveal').forEach(el => {
+      gsap.fromTo(el, { scale: 1.15, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.6, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 80%' }});
+    });
+
+    // Parallax images
+    gsap.utils.toArray('.parallax-img').forEach(img => {
+      gsap.to(img, { yPercent: -20, ease: 'none', scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: 1 }});
     });
 
     // Stats count-up
-    ScrollTrigger.create({
-      trigger: '.vessel-stats',
-      start: 'top 80%',
-      once: true,
-      onEnter: () => {
-        const counter = document.querySelector('[data-count]');
-        if (!counter) return;
-        const target = parseInt(counter.dataset.count);
-        let current = 0;
-        const step = () => {
-          current += Math.ceil(target / 40);
-          if (current >= target) { counter.textContent = target; return; }
-          counter.textContent = current;
-          requestAnimationFrame(step);
-        };
-        step();
-      }
+    ScrollTrigger.create({ trigger: '.vessel-stats', start: 'top 80%', once: true,
+      onEnter: () => { const c = document.querySelector('[data-count]'); if(!c) return; const t = parseInt(c.dataset.count); let v = 0; (function s() { v += Math.ceil(t/40); if(v>=t){c.textContent=t;return;} c.textContent=v; requestAnimationFrame(s); })(); }
     });
 
-    // Stats row reveal
-    gsap.from('.vessel-stats', {
-      opacity: 0, y: 50, duration: 1.2, ease: 'power3.out',
-      scrollTrigger: { trigger: '.vessel-stats', start: 'top 85%' }
+    // Gear cards
+    gsap.utils.toArray('.gear-card').forEach((el,i) => {
+      gsap.from(el, { opacity: 0, y: 50, scale: 1.05, duration: 1.2, delay: i*0.12, ease: 'power3.out', scrollTrigger: { trigger: '.gear-grid', start: 'top 80%' }});
     });
 
-    // Parallax strips — increased intensity (-100 to 100 range)
-    ['#aerialParallax', '#bookingParallax', '#builtForParallax'].forEach(id => {
-      const el = document.querySelector(id);
-      if (!el) return;
-      gsap.fromTo(el,
-        { y: 100 },
-        {
-          y: -100,
-          scrollTrigger: {
-            trigger: el.closest('section, .vessel-parallax'),
-            start: 'top bottom', end: 'bottom top', scrub: true
-          }
+    // Artist cards
+    gsap.utils.toArray('.artist-card').forEach((el,i) => {
+      gsap.from(el, { opacity: 0, y: 50, scale: 1.05, duration: 1.2, delay: (i%3)*0.12, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' }});
+    });
+
+    // HOW TO BOOK — pinned steps (desktop only)
+    if (window.innerWidth > 1024) {
+      const steps = gsap.utils.toArray('.booking-step');
+      const progress = document.getElementById('bookingProgress');
+
+      ScrollTrigger.create({
+        trigger: '.booking-pin',
+        start: 'top top',
+        end: '+=250%',
+        pin: true,
+        scrub: 1,
+        onUpdate: self => {
+          const p = self.progress;
+          const activeIdx = Math.min(Math.floor(p * 5), 4);
+          steps.forEach((s,i) => s.classList.toggle('active', i <= activeIdx));
+          if (progress) progress.style.width = ((activeIdx + 1) * 20) + '%';
         }
-      );
-    });
-
-    // Studio strip items — slow reveal with scale
-    gsap.utils.toArray('.studio-strip img').forEach((el, i) => {
-      gsap.from(el, {
-        opacity: 0, x: 60, scale: 1.05, duration: 1.2, delay: i * 0.12,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: '.studio-strip', start: 'top 80%' }
       });
+    }
+
+    // Built-for cards
+    gsap.utils.toArray('.bf-card').forEach((el,i) => {
+      gsap.from(el, { opacity: 0, y: 50, scale: 1.05, duration: 1.2, delay: (i%3)*0.12, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' }});
     });
 
-    // Piano video
-    gsap.from('.piano-video', {
-      opacity: 0, y: 50, scale: 1.03, duration: 1.2, ease: 'power3.out',
-      scrollTrigger: { trigger: '.piano-video', start: 'top 85%' }
-    });
-
-    // Gear cards stagger with scale
-    gsap.utils.toArray('.gear-card').forEach((el, i) => {
-      gsap.from(el, {
-        opacity: 0, y: 50, scale: 1.05, duration: 1.2, delay: i * 0.12,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: '.gear-grid', start: 'top 80%' }
-      });
-    });
-
-    // Artist cards stagger with scale
-    gsap.utils.toArray('.artist-card').forEach((el, i) => {
-      gsap.from(el, {
-        opacity: 0, y: 50, scale: 1.05, duration: 1.2, delay: (i % 3) * 0.12,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 85%' }
-      });
-    });
-
-    // Booking steps stagger
-    gsap.utils.toArray('.booking-step').forEach((el, i) => {
-      gsap.from(el, {
-        opacity: 0, y: 50, duration: 1.2, delay: i * 0.1,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: '.booking-steps', start: 'top 80%' }
-      });
-    });
-
-    // Built-for cards stagger
-    gsap.utils.toArray('.bf-card').forEach((el, i) => {
-      gsap.from(el, {
-        opacity: 0, y: 50, scale: 1.05, duration: 1.2, delay: (i % 3) * 0.12,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 85%' }
-      });
-    });
-
-    // ── VIDEO PLAY ON VISIBILITY ─────────────────────
+    // Video visibility
     const vObs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.play().catch(() => {});
-        else e.target.pause();
-      });
+      entries.forEach(e => { if(e.isIntersecting) e.target.play().catch(()=>{}); else e.target.pause(); });
     }, { threshold: 0.2 });
-
-    document.querySelectorAll('video').forEach(v => {
-      v.play().catch(() => {});
-      vObs.observe(v);
-    });
+    document.querySelectorAll('video').forEach(v => { v.play().catch(()=>{}); vObs.observe(v); });
   </script>
 </body>
 </html>
