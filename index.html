@@ -731,10 +731,7 @@
         <div class="contact-row"><span class="mono">Location</span><a href="https://maps.google.com/?q=Marina+del+Rey+CA" target="_blank" rel="noopener">Marina del Rey, CA</a></div>
       </div>
 
-      <form class="inquiry-form reveal" action="https://formsubmit.co/greg@malibufilms.com" method="POST">
-        <input type="hidden" name="_subject" value="The Yacht Studio — New Inquiry" />
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="hidden" name="_template" value="table" />
+      <form class="inquiry-form reveal" id="inquiryForm">
         <input type="text" name="_honey" style="display:none" />
         <div class="form-row">
           <div class="form-group"><input type="text" name="name" placeholder="Your Name" required /></div>
@@ -755,7 +752,7 @@
         </div>
         <div class="form-group"><input type="text" name="dates" placeholder="Preferred Dates" /></div>
         <div class="form-group"><textarea name="message" placeholder="Tell us about the project..."></textarea></div>
-        <button type="submit" class="form-submit">Send Inquiry &rarr;</button>
+        <button type="submit" class="form-submit" id="formBtn">Send Inquiry &rarr;</button>
       </form>
     </div>
   </section>
@@ -915,6 +912,45 @@
         { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
           scrollTrigger: { trigger: el, start: 'top 88%', once: true }
         });
+    });
+
+    // Form — AJAX submit, no redirect
+    document.getElementById('inquiryForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('formBtn');
+      const form = this;
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      const data = new FormData(form);
+      data.append('_subject', 'The Yacht Studio — New Inquiry');
+      data.append('_captcha', 'false');
+      data.append('_template', 'table');
+
+      fetch('https://formsubmit.co/ajax/greg@malibufilms.com', {
+        method: 'POST',
+        body: data
+      })
+      .then(r => r.json())
+      .then(() => {
+        btn.textContent = 'Sent ✓';
+        btn.style.background = '#2a7d4f';
+        form.reset();
+        setTimeout(() => {
+          btn.textContent = 'Send Inquiry →';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+      })
+      .catch(() => {
+        btn.textContent = 'Error — Try Again';
+        btn.style.background = '#8b3a3a';
+        btn.disabled = false;
+        setTimeout(() => {
+          btn.textContent = 'Send Inquiry →';
+          btn.style.background = '';
+        }, 3000);
+      });
     });
 
     // Video visibility
