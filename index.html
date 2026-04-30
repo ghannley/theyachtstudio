@@ -255,13 +255,11 @@
     /* ARTISTS */
     .name-marquee { overflow: hidden; margin-bottom: 48px; padding: 28px 0; }
     .name-marquee-inner { display: flex; align-items: baseline; gap: 20px; width: max-content; animation: tickerScroll 50s linear infinite; }
-    .name-marquee:hover .name-marquee-inner { animation-play-state: paused; }
     .name-marquee-inner span { font-family: 'Fraunces', serif; font-size: clamp(2rem, 3.5vw, 3.2rem); font-weight: 300; color: rgba(245,240,232,0.7); white-space: nowrap; transition: color 0.3s; }
     .name-marquee-inner span:hover { color: var(--gold); }
     .name-marquee-inner span::after { content: '·'; margin-left: 20px; color: rgba(201,168,76,0.3); font-size: 0.6em; }
     .name-marquee-inner img.name-logo { display: inline-block; height: clamp(32px, 4.5vw, 48px); opacity: 0.7; transition: opacity 0.3s; vertical-align: middle; }
     .name-marquee-inner img.name-logo:hover { opacity: 1; }
-    .name-marquee-inner .name-sep { color: rgba(201,168,76,0.3); font-size: clamp(1rem, 1.5vw, 1.4rem); margin: 0 10px; align-self: center; }
 
     .artist-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .artist-card { position: relative; height: 400px; overflow: hidden; border-radius: 4px; border: 1px solid transparent; transition: transform 0.3s var(--ease), border-color 0.3s; }
@@ -598,12 +596,12 @@
         <span>Blueface</span><span>Lil Pump</span><span>Alabama Barker</span>
         <span>The Chainsmokers</span><span>Mike Tyson</span><span>Chumlee</span>
         <span>Daniel Baldwin</span><span>Denise Richards</span><span>Baby E</span>
-        <span class="name-sep">·</span><img class="name-logo" src="images/names/ovo.png" alt="OVO" /><span class="name-sep">·</span><img class="name-logo" src="images/names/deathrow.png" alt="Death Row" /><span class="name-sep">·</span><img class="name-logo" src="images/names/worldstar.png" alt="Worldstar" /><span class="name-sep">·</span><img class="name-logo" src="images/names/universal-music.png" alt="Universal Music" />
+        <span><img class="name-logo" src="images/names/ovo.png" alt="OVO" /></span><span><img class="name-logo" src="images/names/deathrow.png" alt="Death Row" /></span><span><img class="name-logo" src="images/names/worldstar.png" alt="Worldstar" /></span><span><img class="name-logo" src="images/names/universal-music.png" alt="Universal Music" /></span>
         <span>Scott Storch</span><span>DDG</span><span>Hit-Boy</span><span>Nikki Paige</span>
         <span>Blueface</span><span>Lil Pump</span><span>Alabama Barker</span>
         <span>The Chainsmokers</span><span>Mike Tyson</span><span>Chumlee</span>
         <span>Daniel Baldwin</span><span>Denise Richards</span><span>Baby E</span>
-        <span class="name-sep">·</span><img class="name-logo" src="images/names/ovo.png" alt="OVO" /><span class="name-sep">·</span><img class="name-logo" src="images/names/deathrow.png" alt="Death Row" /><span class="name-sep">·</span><img class="name-logo" src="images/names/worldstar.png" alt="Worldstar" /><span class="name-sep">·</span><img class="name-logo" src="images/names/universal-music.png" alt="Universal Music" />
+        <span><img class="name-logo" src="images/names/ovo.png" alt="OVO" /></span><span><img class="name-logo" src="images/names/deathrow.png" alt="Death Row" /></span><span><img class="name-logo" src="images/names/worldstar.png" alt="Worldstar" /></span><span><img class="name-logo" src="images/names/universal-music.png" alt="Universal Music" /></span>
       </div>
     </div>
 
@@ -725,6 +723,11 @@
       </div>
     </div>
   </section>
+
+  <!-- SPEAKER ANIMATION -->
+  <div class="speaker-animation-wrap">
+    <iframe src="speaker-animation.html" class="speaker-animation" loading="lazy" title="Boat Speaker Animation" scrolling="no" frameborder="0"></iframe>
+  </div>
 
   <div class="section-divider"></div>
 
