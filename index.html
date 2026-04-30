@@ -375,7 +375,7 @@
 
     /* SPEAKER ANIMATION */
     .speaker-animation-wrap { width: 100%; overflow: hidden; background: var(--bg); }
-    .speaker-animation { width: 100%; height: 340px; border: none; display: block; }
+    .speaker-animation { width: 100%; height: auto; display: block; object-fit: cover; }
     @media (max-width: 768px) { .speaker-animation { height: 220px; } }
 
     /* INQUIRY */
@@ -726,7 +726,7 @@
 
   <!-- SPEAKER ANIMATION -->
   <div class="speaker-animation-wrap">
-    <iframe src="speaker-animation.html" class="speaker-animation" loading="lazy" title="Boat Speaker Animation" scrolling="no" frameborder="0"></iframe>
+    <video class="speaker-animation" src="images/speaker-animation.mp4" autoplay muted loop playsinline></video>
   </div>
 
   <div class="section-divider"></div>
