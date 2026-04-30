@@ -11,6 +11,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
 
+  <!-- Lenis Smooth Scroll -->
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+
   <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -332,7 +335,7 @@
     }
 
     .gear-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
+      display: grid; grid-template-columns: repeat(2, 1fr);
       gap: 16px; margin-top: 80px;
     }
     .gear-card {
@@ -354,7 +357,13 @@
     }
     .gear-card-body li:last-child { border-bottom: none; }
 
-    @media (max-width: 1024px) { .gear-grid { grid-template-columns: repeat(2, 1fr); } }
+    .gear-card-icon {
+      height: 200px; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.03));
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+    .gear-card-icon svg { opacity: 0.5; }
+
     @media (max-width: 640px) {
       .gear-grid { grid-template-columns: 1fr; }
       .studio-strip img { height: 340px; min-width: 300px; }
@@ -432,31 +441,25 @@
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold);
     }
 
-    .artist-card-text {
-      background: var(--card); height: 400px; display: flex;
-      flex-direction: column; justify-content: flex-end;
-      padding: 28px 24px; border-radius: 4px;
-      border-top: 2px solid var(--gold);
-      transition: transform 0.3s var(--ease-out), border-color 0.3s;
-      border-left: 1px solid transparent;
-      border-right: 1px solid transparent;
-      border-bottom: 1px solid transparent;
-    }
-    .artist-card-text:hover { transform: scale(1.02); border-color: var(--gold); }
-    .artist-card-text .a-name {
-      font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144;
-      font-weight: 300; font-size: 1.5rem; color: var(--text); margin-bottom: 6px;
-    }
-    .artist-card-text .a-role {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
-      letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
-    }
-
     @media (max-width: 1024px) { .artist-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 640px) {
       .artist-grid { grid-template-columns: 1fr; }
-      .artist-card, .artist-card-text { height: 340px; }
+      .artist-card { height: 340px; }
     }
+
+    /* Section dividers */
+    .section-divider {
+      width: 100%; height: 1px; position: relative; overflow: hidden;
+      margin: 0;
+    }
+    .section-divider::after {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 1.2s var(--ease-out);
+    }
+    .section-divider.drawn::after { transform: scaleX(1); }
 
     /* ─── HOW TO BOOK ─────────────────────────── */
     .booking {
@@ -719,6 +722,8 @@
     </div>
   </section>
 
+  <div class="section-divider"></div>
+
   <!-- ═══ SECTION 2: THE VESSEL ═══ -->
   <section class="vessel section-pad" id="vessel">
     <p class="eyebrow">Chapter I — The Vessel</p>
@@ -764,6 +769,8 @@
     </div>
   </div>
 
+  <div class="section-divider"></div>
+
   <!-- ═══ SECTION 3: THE STUDIO ═══ -->
   <section class="studio section-pad" id="studio">
     <p class="eyebrow">Chapter II — The Studio</p>
@@ -794,8 +801,6 @@
           <ul>
             <li>Arturia Astrolab 88</li>
             <li>Arturia PolyBrute 12</li>
-            <li>Yamaha C7 Grand Piano</li>
-            <li>Moog Subsequent 37</li>
           </ul>
         </div>
       </div>
@@ -806,56 +811,31 @@
           <ul>
             <li>Neumann U87</li>
             <li>Sony C-800G</li>
-            <li>Telefunken ELAM 251</li>
-            <li>AKG C414 XLII</li>
           </ul>
         </div>
       </div>
       <div class="gear-card">
-        <img class="gear-card-img" src="images/studio-daw.jpg" alt="Console" />
+        <div class="gear-card-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+            <circle cx="8" cy="10" r="1.5"/><circle cx="12" cy="10" r="1.5"/><circle cx="16" cy="10" r="1.5"/>
+          </svg>
+        </div>
         <div class="gear-card-body">
           <p class="gear-card-title">Console &amp; DAW</p>
           <ul>
-            <li>SSL 9000J</li>
-            <li>Neve 8078</li>
-            <li>Pro Tools HDX</li>
-            <li>Avid S6</li>
+            <li>Universal Audio Apollo</li>
+            <li>Pro Tools</li>
           </ul>
         </div>
       </div>
       <div class="gear-card">
-        <img class="gear-card-img" src="images/9X7A0023.jpg" alt="Preamps" />
+        <img class="gear-card-img" src="images/studio-setup.jpg" alt="Studio Monitors" />
         <div class="gear-card-body">
-          <p class="gear-card-title">Preamps &amp; Compressors</p>
-          <ul>
-            <li>Tube-Tech CL 1B</li>
-            <li>API 512c</li>
-            <li>Universal Audio 1176</li>
-            <li>Neve 1073</li>
-          </ul>
-        </div>
-      </div>
-      <div class="gear-card">
-        <img class="gear-card-img" src="images/studio-setup.jpg" alt="Monitoring" />
-        <div class="gear-card-body">
-          <p class="gear-card-title">Monitoring</p>
+          <p class="gear-card-title">Studio Monitors</p>
           <ul>
             <li>Genelec 8351B</li>
             <li>Yamaha NS-10M</li>
-            <li>Barefoot MM27</li>
-            <li>Focal Trio6</li>
-          </ul>
-        </div>
-      </div>
-      <div class="gear-card">
-        <img class="gear-card-img" src="images/9X7A0037.jpg" alt="Outboard" />
-        <div class="gear-card-body">
-          <p class="gear-card-title">Outboard</p>
-          <ul>
-            <li>Manley VOXBOX</li>
-            <li>Empirical Labs Distressor</li>
-            <li>Lexicon 480L</li>
-            <li>Thermionic Culture Vulture</li>
           </ul>
         </div>
       </div>
@@ -864,15 +844,15 @@
     <!-- Brand ticker -->
     <div class="brand-ticker">
       <div class="brand-ticker-inner">
-        <span>SSL</span><span>Neve</span><span>Neumann</span><span>Universal Audio</span>
-        <span>Genelec</span><span>Arturia</span><span>Yamaha</span><span>Telefunken</span>
-        <span>Manley</span><span>API</span><span>Tube-Tech</span><span>Moog</span><span>Pro Tools</span>
-        <span>SSL</span><span>Neve</span><span>Neumann</span><span>Universal Audio</span>
-        <span>Genelec</span><span>Arturia</span><span>Yamaha</span><span>Telefunken</span>
-        <span>Manley</span><span>API</span><span>Tube-Tech</span><span>Moog</span><span>Pro Tools</span>
+        <span>Neumann</span><span>Universal Audio</span><span>Genelec</span>
+        <span>Arturia</span><span>Yamaha</span><span>Sony</span><span>Pro Tools</span>
+        <span>Neumann</span><span>Universal Audio</span><span>Genelec</span>
+        <span>Arturia</span><span>Yamaha</span><span>Sony</span><span>Pro Tools</span>
       </div>
     </div>
   </section>
+
+  <div class="section-divider"></div>
 
   <!-- ═══ SECTION 4: ARTISTS ═══ -->
   <section class="artists section-pad" id="artists">
@@ -882,22 +862,21 @@
     <!-- Name marquee -->
     <div class="name-marquee">
       <div class="name-marquee-inner">
-        <span>DDG</span><span>Scott Storch</span><span>Hit-Boy</span><span>Blueface</span>
-        <span>Lil Pump</span><span>Nikki Paige</span><span>Alabama Barker</span>
+        <span>Scott Storch</span><span>DDG</span><span>Hit-Boy</span><span>Nikki Paige</span>
+        <span>Blueface</span><span>Lil Pump</span><span>Alabama Barker</span>
         <span>The Chainsmokers</span><span>Mike Tyson</span><span>Chumlee</span>
         <span>Daniel Baldwin</span><span>Denise Richards</span><span>Baby E</span>
         <span>OVO</span><span>Death Row</span><span>Worldstar</span><span>Sony</span><span>Universal</span>
-        <span>DDG</span><span>Scott Storch</span><span>Hit-Boy</span><span>Blueface</span>
-        <span>Lil Pump</span><span>Nikki Paige</span><span>Alabama Barker</span>
+        <span>Scott Storch</span><span>DDG</span><span>Hit-Boy</span><span>Nikki Paige</span>
+        <span>Blueface</span><span>Lil Pump</span><span>Alabama Barker</span>
         <span>The Chainsmokers</span><span>Mike Tyson</span><span>Chumlee</span>
         <span>Daniel Baldwin</span><span>Denise Richards</span><span>Baby E</span>
         <span>OVO</span><span>Death Row</span><span>Worldstar</span><span>Sony</span><span>Universal</span>
       </div>
     </div>
 
-    <!-- Artist grid -->
+    <!-- Artist grid — photo cards only -->
     <div class="artist-grid">
-      <!-- Row 1: photo cards -->
       <div class="artist-card">
         <img src="images/ScottStorch.png" alt="Scott Storch" />
         <div class="a-overlay"></div>
@@ -913,75 +892,25 @@
         <div class="a-overlay"></div>
         <div class="a-info"><p class="a-name">Hit-Boy</p><p class="a-role">Producer</p></div>
       </div>
-
-      <!-- Row 2 -->
-      <div class="artist-card-text">
-        <p class="a-name">Blueface</p><p class="a-role">Artist</p>
-      </div>
       <div class="artist-card">
         <img src="images/Storchkeys.png" alt="Scott Storch in session" />
         <div class="a-overlay"></div>
         <div class="a-info"><p class="a-name">Scott Storch</p><p class="a-role">In Session</p></div>
       </div>
-      <div class="artist-card-text">
-        <p class="a-name">Lil Pump</p><p class="a-role">Artist</p>
-      </div>
-
-      <!-- Row 3 -->
       <div class="artist-card">
         <img src="images/9X7A0114.jpg" alt="Nikki Paige" />
         <div class="a-overlay"></div>
         <div class="a-info"><p class="a-name">Nikki Paige</p><p class="a-role">Artist — MF Records</p></div>
       </div>
-      <div class="artist-card-text">
-        <p class="a-name">Alabama Barker</p><p class="a-role">Artist</p>
-      </div>
-      <div class="artist-card-text">
-        <p class="a-name">The Chainsmokers</p><p class="a-role">Artist</p>
-      </div>
-
-      <!-- Row 4 -->
       <div class="artist-card">
         <img src="images/yacht-jacuzzi.jpg" alt="The Experience" />
         <div class="a-overlay"></div>
         <div class="a-info"><p class="a-name">The Experience</p></div>
       </div>
-      <div class="artist-card-text">
-        <p class="a-name">Mike Tyson</p><p class="a-role">Celebrity</p>
-      </div>
-      <div class="artist-card">
-        <img src="images/studio-producers.jpg" alt="In Session" />
-        <div class="a-overlay"></div>
-        <div class="a-info"><p class="a-name">In Session</p></div>
-      </div>
-
-      <!-- Row 5 -->
-      <div class="artist-card-text">
-        <p class="a-name">Chumlee</p><p class="a-role">Celebrity</p>
-      </div>
-      <div class="artist-card">
-        <img src="images/studio-session.jpg" alt="The Work" />
-        <div class="a-overlay"></div>
-        <div class="a-info"><p class="a-name">The Work</p></div>
-      </div>
-      <div class="artist-card-text">
-        <p class="a-name">Daniel Baldwin</p><p class="a-role">Actor</p>
-      </div>
-
-      <!-- Row 6 -->
-      <div class="artist-card-text">
-        <p class="a-name">Denise Richards</p><p class="a-role">Actress</p>
-      </div>
-      <div class="artist-card">
-        <img src="images/studio-captain.jpg" alt="The Vessel" />
-        <div class="a-overlay"></div>
-        <div class="a-info"><p class="a-name">The Vessel</p></div>
-      </div>
-      <div class="artist-card-text">
-        <p class="a-name">Baby E</p><p class="a-role">Artist</p>
-      </div>
     </div>
   </section>
+
+  <div class="section-divider"></div>
 
   <!-- ═══ SECTION 5: HOW TO BOOK ═══ -->
   <section class="booking section-pad" id="booking">
@@ -1064,6 +993,8 @@
       </div>
     </div>
   </section>
+
+  <div class="section-divider"></div>
 
   <!-- ═══ SECTION 7: INQUIRY ═══ -->
   <section class="inquiry section-pad" id="inquiry">
@@ -1187,6 +1118,24 @@
     // ── PAGE LOAD ────────────────────────────────────
     window.addEventListener('load', () => document.body.classList.add('loaded'));
 
+    // ── LENIS SMOOTH SCROLL ──────────────────────────
+    const lenis = new Lenis({
+      duration: 1.4,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Connect Lenis to GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
     // ── CURSOR ───────────────────────────────────────
     const dot = document.getElementById('cursorDot');
     const ring = document.getElementById('cursorRing');
@@ -1208,9 +1157,9 @@
 
     // ── NAV SCROLL ───────────────────────────────────
     const nav = document.getElementById('mainNav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 80);
-    }, { passive: true });
+    lenis.on('scroll', ({ scroll }) => {
+      nav.classList.toggle('scrolled', scroll > 80);
+    });
 
     // ── MOBILE MENU ──────────────────────────────────
     const hamburger = document.getElementById('hamburger');
@@ -1219,41 +1168,61 @@
     hamburger.addEventListener('click', () => {
       hamburger.classList.toggle('open');
       mobileMenu.classList.toggle('open');
+      if (mobileMenu.classList.contains('open')) lenis.stop();
+      else lenis.start();
     });
 
     function closeMobile() {
       hamburger.classList.remove('open');
       mobileMenu.classList.remove('open');
+      lenis.start();
     }
 
     // ── GSAP ANIMATIONS ─────────────────────────────
     gsap.registerPlugin(ScrollTrigger);
 
-    // Hero parallax
+    // Hero content parallax (increased intensity)
     gsap.to('.hero-content', {
-      y: -30,
+      y: -100,
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
     });
 
-    // Universal section reveal
+    // Hero video parallax
+    gsap.to('.hero video', {
+      y: 100,
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+    });
+
+    // Section dividers — draw in on scroll
+    gsap.utils.toArray('.section-divider').forEach(el => {
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 90%',
+        once: true,
+        onEnter: () => el.classList.add('drawn')
+      });
+    });
+
+    // Universal section reveal — slow scale + fade
     gsap.utils.toArray('.eyebrow, .section-h2, .studio-body-text, .piano-caption, .inquiry-contact, .inquiry-form, .contact-row').forEach(el => {
       gsap.from(el, {
-        opacity: 0, y: 40, duration: 1,
+        opacity: 0, y: 50, duration: 1.2, ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 85%' }
       });
     });
 
-    // Vessel grid stagger
+    // Vessel grid stagger with scale reveal
     gsap.utils.toArray('.vessel-grid > div').forEach((el, i) => {
       gsap.from(el, {
-        opacity: 0, y: 40, duration: 1, delay: i * 0.15,
+        opacity: 0, y: 50, scale: 1.05, duration: 1.2, delay: i * 0.15,
+        ease: 'power3.out',
         scrollTrigger: { trigger: '.vessel-grid', start: 'top 80%' }
       });
     });
 
-    // Vessel large image parallax
+    // Vessel large image parallax (increased intensity)
     gsap.to('#vesselLarge', {
-      y: -60,
+      y: -100,
       scrollTrigger: { trigger: '.vessel-grid', start: 'top bottom', end: 'bottom top', scrub: true }
     });
 
@@ -1279,49 +1248,55 @@
 
     // Stats row reveal
     gsap.from('.vessel-stats', {
-      opacity: 0, y: 40, duration: 1,
+      opacity: 0, y: 50, duration: 1.2, ease: 'power3.out',
       scrollTrigger: { trigger: '.vessel-stats', start: 'top 85%' }
     });
 
-    // Parallax strips (transform-based)
+    // Parallax strips — increased intensity (-100 to 100 range)
     ['#aerialParallax', '#bookingParallax', '#builtForParallax'].forEach(id => {
       const el = document.querySelector(id);
       if (!el) return;
-      gsap.to(el, {
-        y: -80,
-        scrollTrigger: {
-          trigger: el.closest('section, .vessel-parallax'),
-          start: 'top bottom', end: 'bottom top', scrub: true
+      gsap.fromTo(el,
+        { y: 100 },
+        {
+          y: -100,
+          scrollTrigger: {
+            trigger: el.closest('section, .vessel-parallax'),
+            start: 'top bottom', end: 'bottom top', scrub: true
+          }
         }
-      });
+      );
     });
 
-    // Studio strip items
+    // Studio strip items — slow reveal with scale
     gsap.utils.toArray('.studio-strip img').forEach((el, i) => {
       gsap.from(el, {
-        opacity: 0, x: 60, duration: 0.8, delay: i * 0.1,
+        opacity: 0, x: 60, scale: 1.05, duration: 1.2, delay: i * 0.12,
+        ease: 'power3.out',
         scrollTrigger: { trigger: '.studio-strip', start: 'top 80%' }
       });
     });
 
     // Piano video
     gsap.from('.piano-video', {
-      opacity: 0, y: 40, duration: 1,
+      opacity: 0, y: 50, scale: 1.03, duration: 1.2, ease: 'power3.out',
       scrollTrigger: { trigger: '.piano-video', start: 'top 85%' }
     });
 
-    // Gear cards stagger
+    // Gear cards stagger with scale
     gsap.utils.toArray('.gear-card').forEach((el, i) => {
       gsap.from(el, {
-        opacity: 0, y: 40, duration: 0.8, delay: i * 0.1,
+        opacity: 0, y: 50, scale: 1.05, duration: 1.2, delay: i * 0.12,
+        ease: 'power3.out',
         scrollTrigger: { trigger: '.gear-grid', start: 'top 80%' }
       });
     });
 
-    // Artist cards stagger
-    gsap.utils.toArray('.artist-card, .artist-card-text').forEach((el, i) => {
+    // Artist cards stagger with scale
+    gsap.utils.toArray('.artist-card').forEach((el, i) => {
       gsap.from(el, {
-        opacity: 0, y: 40, duration: 0.8, delay: (i % 3) * 0.1,
+        opacity: 0, y: 50, scale: 1.05, duration: 1.2, delay: (i % 3) * 0.12,
+        ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 85%' }
       });
     });
@@ -1329,7 +1304,8 @@
     // Booking steps stagger
     gsap.utils.toArray('.booking-step').forEach((el, i) => {
       gsap.from(el, {
-        opacity: 0, y: 40, duration: 0.8, delay: i * 0.1,
+        opacity: 0, y: 50, duration: 1.2, delay: i * 0.1,
+        ease: 'power3.out',
         scrollTrigger: { trigger: '.booking-steps', start: 'top 80%' }
       });
     });
@@ -1337,7 +1313,8 @@
     // Built-for cards stagger
     gsap.utils.toArray('.bf-card').forEach((el, i) => {
       gsap.from(el, {
-        opacity: 0, y: 40, duration: 0.8, delay: (i % 3) * 0.1,
+        opacity: 0, y: 50, scale: 1.05, duration: 1.2, delay: (i % 3) * 0.12,
+        ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 85%' }
       });
     });
