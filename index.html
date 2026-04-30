@@ -372,6 +372,11 @@
     @media (max-width: 1024px) { .bf-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 640px) { .bf-grid { grid-template-columns: 1fr; } .bf-card { aspect-ratio: 3/4; } }
 
+    /* SPEAKER ANIMATION */
+    .speaker-animation-wrap { width: 100%; overflow: hidden; background: var(--bg); }
+    .speaker-animation { width: 100%; height: 340px; border: none; display: block; }
+    @media (max-width: 768px) { .speaker-animation { height: 220px; } }
+
     /* INQUIRY */
     .inquiry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 60px; }
     .contact-row { display: flex; align-items: baseline; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid rgba(245,240,232,0.06); }
@@ -717,6 +722,11 @@
       </div>
     </div>
   </section>
+
+  <!-- SPEAKER ANIMATION -->
+  <div class="speaker-animation-wrap">
+    <iframe src="speaker-animation.html" class="speaker-animation" loading="lazy" title="Boat Speaker Animation"></iframe>
+  </div>
 
   <div class="section-divider"></div>
 
