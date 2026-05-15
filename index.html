@@ -83,17 +83,17 @@
     .nav-center { display: flex; align-items: center; gap: 44px; }
     .nav-center a {
       font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
-      letter-spacing: 0.14em; text-transform: uppercase;
+      font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
       color: rgba(245,240,232,0.5); transition: color 0.2s;
     }
     .nav-center a:hover { color: var(--text); }
     .nav-cta {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--gold); border: 1px solid var(--border);
-      padding: 9px 22px; transition: background 0.25s, color 0.25s, border-color 0.25s;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--bg); background: var(--gold); border: 1px solid var(--gold);
+      padding: 11px 26px; transition: background 0.25s, color 0.25s, border-color 0.25s;
     }
-    .nav-cta:hover { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+    .nav-cta:hover { background: transparent; color: var(--gold); border-color: var(--gold); }
 
     .nav-hamburger {
       display: none; flex-direction: column; gap: 5px;
@@ -516,11 +516,11 @@
     /* FOOTER */
     footer { background: #050505; padding: 80px 52px 44px; border-top: 1px solid var(--border); }
     .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr; gap: 48px; margin-bottom: 60px; }
-    .footer-col-title { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+    .footer-col-title { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
     .footer-links { display: flex; flex-direction: column; gap: 12px; }
-    .footer-links a { font-size: 1.05rem; color: rgba(245,240,232,0.45); transition: color 0.2s; }
+    .footer-links a { font-size: 1.25rem; color: rgba(245,240,232,0.45); transition: color 0.2s; }
     .footer-links a:hover { color: var(--gold); }
-    .footer-coords-text { font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; letter-spacing: 0.06em; color: rgba(245,240,232,0.3); line-height: 1.8; }
+    .footer-coords-text { font-family: 'JetBrains Mono', monospace; font-size: 1rem; letter-spacing: 0.06em; color: rgba(245,240,232,0.3); line-height: 1.8; }
     .footer-email-form { display: flex; gap: 0; margin-top: 4px; }
     .footer-email-input { flex: 1; background: var(--card); border: 1px solid var(--border); color: var(--text); font-family: 'Manrope', sans-serif; font-size: 0.82rem; padding: 10px 14px; outline: none; border-radius: 0; }
     .footer-email-input::placeholder { color: var(--muted); }
@@ -549,8 +549,8 @@
     <a href="#vessel" onclick="closeMobile()">The Vessel</a>
     <a href="#studio" onclick="closeMobile()">The Studio</a>
     <a href="#artists" onclick="closeMobile()">Artists</a>
-    <a href="#booking" onclick="closeMobile()">How to Book</a>
     <a href="#events" onclick="closeMobile()">Events</a>
+    <a href="#booking" onclick="closeMobile()">How to Book</a>
     <a href="#inquiry" onclick="closeMobile()">Inquire</a>
   </div>
 
@@ -561,8 +561,8 @@
       <a href="#vessel">The Vessel</a>
       <a href="#studio">The Studio</a>
       <a href="#artists">Artists</a>
-      <a href="#booking">How to Book</a>
       <a href="#events">Events</a>
+      <a href="#booking">How to Book</a>
     </div>
     <a href="#inquiry" class="nav-cta">Inquire</a>
     <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -918,7 +918,7 @@
         <div class="footer-links">
           <p class="footer-col-title">Navigate</p>
           <a href="#vessel">The Vessel</a><a href="#studio">The Studio</a>
-          <a href="#artists">Artists</a><a href="#booking">How to Book</a><a href="#events">Events</a><a href="#inquiry">Inquire</a>
+          <a href="#artists">Artists</a><a href="#events">Events</a><a href="#booking">How to Book</a><a href="#inquiry">Inquire</a>
         </div>
       </div>
       <div>
