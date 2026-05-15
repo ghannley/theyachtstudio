@@ -255,7 +255,7 @@
     /* ARTISTS */
     .name-marquee { overflow: hidden; margin-bottom: 28px; padding: 16px 0; }
     .name-marquee-inner { display: flex; align-items: baseline; gap: 20px; width: max-content; animation: tickerScroll 50s linear infinite; }
-    .name-marquee-inner span { font-family: 'Fraunces', serif; font-size: clamp(1.4rem, 2.5vw, 2.2rem); font-weight: 300; color: rgba(245,240,232,0.7); white-space: nowrap; transition: color 0.3s; }
+    .name-marquee-inner span { font-family: 'Fraunces', serif; font-size: clamp(1.1rem, 2vw, 1.7rem); font-weight: 300; color: rgba(245,240,232,0.7); white-space: nowrap; transition: color 0.3s; }
     .name-marquee-inner span:hover { color: var(--gold); }
     .name-marquee-inner span::after { content: '·'; margin-left: 20px; color: rgba(201,168,76,0.3); font-size: 0.6em; }
     .name-marquee-inner img.name-logo { display: inline-block; height: clamp(32px, 4.5vw, 48px); opacity: 0.7; transition: opacity 0.3s; vertical-align: middle; }
@@ -512,6 +512,7 @@
     <a href="#studio" onclick="closeMobile()">The Studio</a>
     <a href="#artists" onclick="closeMobile()">Artists</a>
     <a href="#booking" onclick="closeMobile()">How to Book</a>
+    <a href="#events" onclick="closeMobile()">Events</a>
     <a href="#inquiry" onclick="closeMobile()">Inquire</a>
   </div>
 
@@ -523,6 +524,7 @@
       <a href="#studio">The Studio</a>
       <a href="#artists">Artists</a>
       <a href="#booking">How to Book</a>
+      <a href="#events">Events</a>
     </div>
     <a href="#inquiry" class="nav-cta">Inquire</a>
     <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -822,7 +824,7 @@
       <div class="reveal">
         <div class="contact-row"><span class="mono">Instagram</span><a href="https://instagram.com/thestudiyacht" target="_blank" rel="noopener">@thestudiyacht</a></div>
         <div class="contact-row"><span class="mono">Phone</span><a href="tel:3109242053">310-924-2053</a></div>
-        <div class="contact-row"><span class="mono">Email</span><a href="mailto:greg@malibufilms.com">greg@malibufilms.com</a></div>
+        <div class="contact-row"><span class="mono">Email</span><a href="mailto:greg@thestudiyacht.com">greg@thestudiyacht.com</a></div>
         <div class="contact-row"><span class="mono">Location</span><a href="https://maps.google.com/?q=Marina+del+Rey+CA" target="_blank" rel="noopener">Marina del Rey, CA</a></div>
       </div>
 
@@ -860,7 +862,7 @@
         <div class="footer-links">
           <p class="footer-col-title">Navigate</p>
           <a href="#vessel">The Vessel</a><a href="#studio">The Studio</a>
-          <a href="#artists">Artists</a><a href="#booking">How to Book</a><a href="#inquiry">Inquire</a>
+          <a href="#artists">Artists</a><a href="#booking">How to Book</a><a href="#events">Events</a><a href="#inquiry">Inquire</a>
         </div>
       </div>
       <div>
@@ -870,7 +872,7 @@
       <div>
         <p class="footer-col-title">Contact</p>
         <div class="footer-links">
-          <a href="mailto:greg@malibufilms.com">greg@malibufilms.com</a>
+          <a href="mailto:greg@thestudiyacht.com">greg@thestudiyacht.com</a>
           <a href="tel:3109242053">310-924-2053</a>
           <a href="https://instagram.com/thestudiyacht" target="_blank" rel="noopener">@thestudiyacht</a>
         </div>
@@ -1031,7 +1033,7 @@
       data.append('_captcha', 'false');
       data.append('_template', 'table');
 
-      fetch('https://formsubmit.co/ajax/greg@malibufilms.com', {
+      fetch('https://formsubmit.co/ajax/greg@thestudiyacht.com', {
         method: 'POST',
         body: data
       })
