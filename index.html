@@ -384,6 +384,54 @@
     @media (max-width: 1024px) { .bf-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 640px) { .bf-grid { grid-template-columns: 1fr; } .bf-card { aspect-ratio: 3/4; } }
 
+    /* PRIVATE EVENTS */
+    .events-section { position: relative; overflow: hidden; background: var(--bg); }
+    .events-header { text-align: center; padding-bottom: 48px; }
+    .events-header h2 { font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144; font-weight: 300; font-size: clamp(2rem, 4vw, 3.6rem); color: var(--text); margin-bottom: 12px; }
+    .events-header h2 em { color: var(--gold); font-style: italic; }
+    .events-header p { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+
+    .events-mosaic {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 280px 280px;
+      gap: 6px;
+    }
+    .events-mosaic .em-item { position: relative; overflow: hidden; border-radius: 3px; }
+    .events-mosaic .em-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease), filter 0.6s; filter: brightness(0.8); }
+    .events-mosaic .em-item:hover img { transform: scale(1.06); filter: brightness(1); }
+    .events-mosaic .em-wide { grid-column: span 2; }
+    .events-mosaic .em-tall { grid-row: span 2; }
+
+    .events-mosaic .em-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to top, rgba(8,8,8,0.5) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .events-cta {
+      text-align: center; padding-top: 48px;
+    }
+    .events-cta a {
+      display: inline-block; padding: 14px 48px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--bg); background: var(--gold);
+      border: 1px solid var(--gold); border-radius: 2px;
+      text-decoration: none; transition: all 0.3s var(--ease);
+    }
+    .events-cta a:hover { background: transparent; color: var(--gold); }
+
+    @media (max-width: 1024px) {
+      .events-mosaic { grid-template-columns: repeat(2, 1fr); grid-template-rows: 220px 220px 220px; }
+      .events-mosaic .em-tall { grid-row: span 1; }
+    }
+    @media (max-width: 640px) {
+      .events-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 180px); gap: 4px; }
+      .events-mosaic .em-wide { grid-column: span 2; }
+      .events-mosaic .em-tall { grid-row: span 1; }
+    }
+
     /* SPEAKER ANIMATION */
     .speaker-animation-wrap { width: 100%; overflow: hidden; background: var(--bg); }
     .speaker-animation { width: 100%; height: auto; display: block; object-fit: cover; }
@@ -739,6 +787,32 @@
 
   <div class="section-divider"></div>
 
+  <!-- PRIVATE EVENTS -->
+  <section class="events-section section-pad" id="events">
+    <div class="events-header reveal">
+      <p class="eyebrow">Available for Private Events</p>
+      <h2>An unforgettable <em>setting.</em></h2>
+      <p>Contact for Pricing</p>
+    </div>
+
+    <div class="events-mosaic">
+      <div class="em-item em-wide"><img src="images/events/3E8A7464.jpg" alt="Yacht event guests" /><div class="em-overlay"></div></div>
+      <div class="em-item em-tall"><img src="images/events/VPV02585.jpg" alt="Red carpet arrival" /><div class="em-overlay"></div></div>
+      <div class="em-item"><img src="images/events/VPV02708.jpg" alt="Gold performers" /><div class="em-overlay"></div></div>
+      <div class="em-item"><img src="images/events/VPV02375.jpg" alt="Yacht deck party" /><div class="em-overlay"></div></div>
+      <div class="em-item"><img src="images/events/3E8A7414.jpg" alt="Catering service" /><div class="em-overlay"></div></div>
+      <div class="em-item"><img src="images/events/VPV02625.jpg" alt="Red carpet couple" /><div class="em-overlay"></div></div>
+      <div class="em-item"><img src="images/events/VPV02808.jpg" alt="Gold performers on deck" /><div class="em-overlay"></div></div>
+      <div class="em-item"><img src="images/events/yacht-aerial.jpg" alt="Yacht aerial view" /><div class="em-overlay"></div></div>
+    </div>
+
+    <div class="events-cta reveal">
+      <a href="#inquiry">Inquire About Events</a>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
   <!-- INQUIRY -->
   <section class="section-pad" id="inquiry">
     <p class="eyebrow reveal">Chapter V — Request Access</p>
@@ -933,6 +1007,14 @@
         { opacity: 0, y: 30 },
         { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
           scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+        });
+    });
+
+    gsap.utils.toArray('.em-item').forEach((el, i) => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 25, scale: 0.97 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.7, delay: i * 0.08, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 90%', once: true }
         });
     });
 
