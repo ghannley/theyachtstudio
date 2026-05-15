@@ -391,19 +391,25 @@
     .events-header h2 em { color: var(--gold); font-style: italic; }
     .events-header p { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 
-    .events-mosaic {
+    .events-top-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 280px;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .events-bottom-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: 280px 280px 280px;
       gap: 6px;
     }
-    .events-mosaic .em-item { position: relative; overflow: hidden; border-radius: 3px; }
-    .events-mosaic .em-item img, .events-mosaic .em-item video { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease), filter 0.6s; filter: brightness(0.8); }
-    .events-mosaic .em-item:hover img, .events-mosaic .em-item:hover video { transform: scale(1.06); filter: brightness(1); }
-    .events-mosaic .em-wide { grid-column: span 2; }
-    .events-mosaic .em-tall { grid-row: span 2; }
+    .events-bottom-row .em-item { aspect-ratio: 9/16; }
 
-    .events-mosaic .em-overlay {
+    .em-item { position: relative; overflow: hidden; border-radius: 3px; }
+    .em-item img, .em-item video { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease), filter 0.6s; filter: brightness(0.8); }
+    .em-item:hover img, .em-item:hover video { transform: scale(1.06); filter: brightness(1); }
+
+    .em-overlay {
       position: absolute; inset: 0; z-index: 1;
       background: linear-gradient(to top, rgba(8,8,8,0.5) 0%, transparent 60%);
       pointer-events: none;
@@ -423,13 +429,14 @@
     .events-cta a:hover { background: transparent; color: var(--gold); }
 
     @media (max-width: 1024px) {
-      .events-mosaic { grid-template-columns: repeat(2, 1fr); grid-template-rows: 220px 220px 220px 220px; }
-      .events-mosaic .em-tall { grid-row: span 1; }
+      .events-top-row { grid-template-columns: 1fr 1fr; grid-template-rows: 220px; }
+      .events-bottom-row { grid-template-columns: repeat(2, 1fr); }
+      .events-bottom-row .em-item { aspect-ratio: 9/16; }
     }
     @media (max-width: 640px) {
-      .events-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 180px); gap: 4px; }
-      .events-mosaic .em-wide { grid-column: span 2; }
-      .events-mosaic .em-tall { grid-row: span 1; }
+      .events-top-row { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .events-top-row .em-item { aspect-ratio: 16/9; }
+      .events-bottom-row { grid-template-columns: 1fr 1fr; }
     }
 
     /* SPEAKER ANIMATION */
@@ -797,16 +804,16 @@
       <p>Contact for Pricing</p>
     </div>
 
-    <div class="events-mosaic">
-      <div class="em-item em-wide"><img src="images/events/3E8A7464.jpg" alt="Yacht event guests" /><div class="em-overlay"></div></div>
-      <div class="em-item em-tall"><img src="images/events/VPV02585.jpg" alt="Red carpet arrival" /><div class="em-overlay"></div></div>
-      <div class="em-item"><img src="images/events/VPV02708.jpg" alt="Gold performers" /><div class="em-overlay"></div></div>
+    <div class="events-top-row">
+      <div class="em-item"><img src="images/events/3E8A7464.jpg" alt="Yacht event guests" /><div class="em-overlay"></div></div>
       <div class="em-item"><img src="images/events/VPV02375.jpg" alt="Yacht deck party" /><div class="em-overlay"></div></div>
       <div class="em-item"><img src="images/events/3E8A7414.jpg" alt="Catering service" /><div class="em-overlay"></div></div>
+    </div>
+    <div class="events-bottom-row">
+      <div class="em-item"><img src="images/events/VPV02585.jpg" alt="Red carpet arrival" /><div class="em-overlay"></div></div>
       <div class="em-item"><img src="images/events/VPV02625.jpg" alt="Red carpet couple" /><div class="em-overlay"></div></div>
-      <div class="em-item"><img src="images/events/nikki-keyboard.jpg" alt="Nikki Paige at keyboard" /><div class="em-overlay"></div></div>
-      <div class="em-item"><img src="images/events/foxyaievent.jpg" alt="Yacht event" /><div class="em-overlay"></div></div>
-      <div class="em-item em-wide"><video src="images/events/foxyaiparty.mp4" autoplay muted loop playsinline></video><div class="em-overlay"></div></div>
+      <div class="em-item"><img src="images/events/yacht-aerial.jpg" alt="Yacht aerial view" /><div class="em-overlay"></div></div>
+      <div class="em-item"><video src="images/events/foxyaiparty.mp4" autoplay muted loop playsinline></video><div class="em-overlay"></div></div>
     </div>
 
     <div class="events-cta reveal">
