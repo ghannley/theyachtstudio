@@ -218,6 +218,35 @@
     /* STUDIO */
     .studio-body-text { font-size: 1rem; color: rgba(245,240,232,0.55); line-height: 1.8; max-width: 560px; margin-bottom: 60px; }
 
+    /* Day/Night back deck section */
+    .deck-daynight {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      margin-top: 60px; margin-bottom: 60px;
+    }
+    .deck-shot {
+      position: relative; overflow: hidden; border-radius: 4px;
+      aspect-ratio: 16/10;
+    }
+    .deck-shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
+    .deck-shot:hover img { transform: scale(1.03); }
+    .deck-label {
+      position: absolute; bottom: 20px; left: 24px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); background: rgba(0,0,0,0.6);
+      padding: 6px 14px; border-radius: 2px; backdrop-filter: blur(8px);
+    }
+    @media (max-width: 768px) {
+      .deck-daynight { grid-template-columns: 1fr; }
+    }
+
+    /* Studio hero image — full width */
+    .studio-hero-img {
+      width: 100%; margin-bottom: 40px; border-radius: 4px; overflow: hidden;
+      aspect-ratio: 16/9;
+    }
+    .studio-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+
     .studio-strip {
       display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch; padding-bottom: 12px; scrollbar-width: none;
@@ -602,6 +631,55 @@
     </div>
   </section>
 
+  <!-- VESSEL STATS — full width exterior -->
+  <section class="section-pad" style="padding-top:0; padding-bottom:0;">
+    <div class="studio-hero-img reveal">
+      <img src="images/yacht-daylight.jpg" alt="The Studi Yacht — full exterior" />
+    </div>
+  </section>
+
+  <!-- DRONE — full width aerial -->
+  <section class="section-pad" style="padding-top:0; padding-bottom:0;">
+    <div class="studio-hero-img reveal">
+      <img src="images/yacht-drone.jpg" alt="The Studi Yacht — aerial view" />
+    </div>
+  </section>
+
+  <!-- FRONT DECK & TOP DECK -->
+  <section class="section-pad" style="padding-top:0; padding-bottom:0;">
+    <div class="deck-daynight reveal">
+      <div class="deck-shot">
+        <img src="images/yacht-front-deck.jpg" alt="Front bow deck" />
+        <span class="deck-label">Front Deck</span>
+      </div>
+      <div class="deck-shot">
+        <img src="images/yacht-top-deck.png" alt="Top deck lounge" />
+        <span class="deck-label">Top Deck</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATEROOM — full width -->
+  <section class="section-pad" style="padding-top:0; padding-bottom:0;">
+    <div class="studio-hero-img reveal">
+      <img src="images/yacht-bed.jpg" alt="Luxury stateroom" />
+    </div>
+  </section>
+
+  <!-- FIREPIT DAY — full width -->
+  <section class="section-pad" style="padding-top:0; padding-bottom:0;">
+    <div class="studio-hero-img reveal">
+      <img src="images/firepit-day.jpg" alt="Upper deck firepit — daytime" />
+    </div>
+  </section>
+
+  <!-- FIREPIT NIGHT — full width -->
+  <section class="section-pad" style="padding-top:0; padding-bottom:0;">
+    <div class="studio-hero-img reveal">
+      <img src="images/firepit-night.jpg" alt="Upper deck firepit — night" />
+    </div>
+  </section>
+
   <!-- Aerial parallax -->
   <div class="parallax-section">
     <img src="images/yacht-parallax.jpg" alt="The Studi Yacht" class="parallax-img" />
@@ -615,6 +693,23 @@
     <p class="eyebrow reveal">Chapter II — The Studio</p>
     <h2 class="section-h2 reveal">Built to <em>record.</em></h2>
     <p class="studio-body-text reveal">Professional-grade production on the Pacific. Acoustically treated. The energy on the water is unlike anything on land.</p>
+
+    <!-- Studio wide shot — full width -->
+    <div class="studio-hero-img reveal">
+      <img src="images/studio-wide-water.png" alt="Studio interior with water view" />
+    </div>
+
+    <!-- Recording Suite & Ocean View -->
+    <div class="deck-daynight reveal">
+      <div class="deck-shot">
+        <img src="images/studio-recording-suite.jpg" alt="The Recording Suite" />
+        <span class="deck-label">Recording Suite</span>
+      </div>
+      <div class="deck-shot">
+        <img src="images/studio-ocean-view.jpg" alt="Ocean View Sessions" />
+        <span class="deck-label">Ocean View</span>
+      </div>
+    </div>
 
     <div class="studio-strip">
       <img src="images/9X7A0217.jpg" alt="Studio" class="zoom-reveal" />
